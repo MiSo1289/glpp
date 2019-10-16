@@ -4,7 +4,7 @@
 
 namespace glpp
 {
-    void init()
+    void load_gl()
     {
         if (!gladLoadGL())
         {

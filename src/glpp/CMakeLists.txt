@@ -59,3 +59,8 @@ option(BUILD_CONFIG "Build the glpp_config library" ON)
 if (BUILD_CONFIG)
 	add_subdirectory(config)
 endif()
+
+option(BUILD_GLFW "Build the glpp_glfw library" ON)
+if (BUILD_GLFW)
+	add_subdirectory(glfw)
+endif()

@@ -1,11 +1,19 @@
 # glpp
+
 OpenGL C++ wrapper
 
 ## Dependencies
+
+The following VCPKG packages are required to build this library:
+
 * fmt
 * glad
 * glm
-* magic_enum
+* magic-enum
 * ms-gsl
 * With BUILD_CONFIG:
-	* nlohmann_json
+	* nlohmann-json
+* With BUILD_GLFW:
+	* boost-signals2
+	* glfw3
+	* spdlog
