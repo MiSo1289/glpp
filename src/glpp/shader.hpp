@@ -64,13 +64,14 @@ namespace glpp
         // Sources should not declare GLSL version, instead the version
         // is passed as parameter to this function.
         //
-        // Throws glpp::Error, glpp::ShaderCompilationError
+        // Throws glpp::Error, glpp::ShaderCompilationError,
+		// std::filesystem::filesystem_error
         Shader(
             ShaderType type,
             GlslVersion version,
             gsl::span<std::filesystem::path const> sources,
-            gsl::span<std::filesystem::path const> include_directories,
-            gsl::span<MacroDefinition const> definitions);
+            gsl::span<std::filesystem::path const> include_directories = {},
+            gsl::span<MacroDefinition const> definitions = {});
 
         [[nodiscard]] auto id() const noexcept -> Id { return id_.get(); }
 

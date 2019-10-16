@@ -211,8 +211,8 @@ namespace glpp
         ShaderType type,
         GlslVersion version,
         gsl::span<std::filesystem::path const> sources,
-        gsl::span<std::filesystem::path const> include_directories = {},
-        gsl::span<MacroDefinition const> definitions = {})
+        gsl::span<std::filesystem::path const> include_directories,
+        gsl::span<MacroDefinition const> definitions)
       : id_{glCreateShader(static_cast<Enum>(type))}
     {
         if (!id())
