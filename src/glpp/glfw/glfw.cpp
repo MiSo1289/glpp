@@ -23,8 +23,8 @@ namespace glpp::glfw
 
     Glfw::~Glfw() noexcept
     {
-        glfwTerminate();
-        glfwSetErrorCallback(nullptr);
+        unchecked_api_invoke(&glfwTerminate);
+        unchecked_api_invoke(&glfwSetErrorCallback, nullptr);
 
 		instance = nullptr;
 	}

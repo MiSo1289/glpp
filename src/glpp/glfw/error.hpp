@@ -46,10 +46,15 @@ namespace glpp::glfw
     // Called by Glfw::~Glfw()
     void uninstall_error_handler() noexcept;
 
-    // Called by this library after all glfw calls.
+    // Called by this library after most GLFW calls.
     //
     // Throws glpp::glfw::GlfwError
     void check_error();
+    
+	// Called by this library after GLFW calls in desctructors.
+    //
+    // Throws glpp::glfw::GlfwError
+	void clear_error() noexcept;
 
     template <typename... Args, typename... PassedArgs>
     void checked_api_invoke(
@@ -75,4 +80,27 @@ namespace glpp::glfw
         return result;
     }
 
+	template <typename... Args, typename... PassedArgs>
+    void unchecked_api_invoke(
+        void (*api_fn)(Args...),
+        PassedArgs const... args)
+    {
+        static_assert((std::is_convertible_v<PassedArgs, Args> && ...));
+
+        api_fn(args...);
+        clear_error();
+    }
+
+    template <typename Ret, typename... Args, typename... PassedArgs>
+    [[nodiscard]] auto unchecked_api_invoke(
+        Ret (*api_fn)(Args...),
+        PassedArgs const... args) -> Ret
+    {
+        static_assert((std::is_convertible_v<PassedArgs, Args> && ...));
+
+        auto result = api_fn(args...);
+        clear_error();
+
+        return result;
+    }
 }  // namespace glpp::glfw

@@ -87,7 +87,7 @@ namespace glpp::glfw
             &glpp_glfw_key_callback);
     }
 
-    auto Window::is_open() -> bool
+    auto Window::is_open() const -> bool
     {
         return !checked_api_invoke(
             &glfwWindowShouldClose,
@@ -106,13 +106,13 @@ namespace glpp::glfw
         return key_signal_.connect(std::move(cb));
     }
 
-    void Window::trigger_key_event(KeyEvent event)
+    void Window::trigger_key_event(KeyEvent event) const
     {
         key_signal_(event);
     }
 
     void Window::Deleter::operator()(GLFWwindow* glfw_window) const noexcept
     {
-        checked_api_invoke(&glfwDestroyWindow, glfw_window);
+        unchecked_api_invoke(&glfwDestroyWindow, glfw_window);
     }
 }  // namespace glpp::glfw

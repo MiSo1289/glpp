@@ -19,7 +19,7 @@ namespace glpp::glfw
         // Only one instance can exist simultaneously.
         // If an instance does not exist, most glfw calls will fail.
         //
-        // Throws glpp::InitError.
+        // Throws glpp::InitError, glpp::glfw::GlfwError
         Glfw();
 
         Glfw(Glfw const&) = delete;
@@ -27,8 +27,8 @@ namespace glpp::glfw
 
         ~Glfw() noexcept;
 
-        Glfw& operator=(Glfw const&) = delete;
-        Glfw& operator=(Glfw&&) = delete;
+        auto operator=(Glfw const&) -> Glfw& = delete;
+        auto operator=(Glfw &&) -> Glfw& = delete;
 
         // Has to be called after a GLFW window has been created
         // and is the current context.

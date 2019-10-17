@@ -43,12 +43,12 @@ namespace glpp::glfw
 {
     void install_error_handler() noexcept
     {
-        glfwSetErrorCallback(&glpp_glfw_error_callback);
+        unchecked_api_invoke(&glfwSetErrorCallback, &glpp_glfw_error_callback);
     }
 
     void uninstall_error_handler() noexcept
     {
-        glfwSetErrorCallback(nullptr);
+        unchecked_api_invoke(&glfwSetErrorCallback, nullptr);
     }
 
     void check_error()
@@ -57,5 +57,10 @@ namespace glpp::glfw
         {
             throw std::move(*error);
         }
+    }
+
+    void clear_error() noexcept
+    {
+        last_glfw_error.reset();
     }
 }  // namespace glpp::glfw

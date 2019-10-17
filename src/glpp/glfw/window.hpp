@@ -34,19 +34,22 @@ namespace glpp::glfw
     class Window
     {
       public:
+       // Throws glpp::glfw::GlfwError
         Window(
             Glfw& glfw,
             WindowMode window_mode,
             std::string const& title);
 
-        [[nodiscard]] auto is_open() -> bool;
+		// Throws glpp::glfw::GlfwError
+        [[nodiscard]] auto is_open() const -> bool;
 
+		// Throws glpp::glfw::GlfwError
         void update();
 
         [[nodiscard]] auto on_key(std::function<void(KeyEvent)> cb)
             -> boost::signals2::connection;
 
-        void trigger_key_event(KeyEvent event);
+        void trigger_key_event(KeyEvent event) const;
 
       private:
         struct Deleter
