@@ -17,10 +17,14 @@ target_include_directories(
 target_sources(
 	glpp_glfw
 	PUBLIC
+		error.hpp
 		glfw.hpp
+		keys.hpp
 		window.hpp
 	PRIVATE
+		error.cpp
 		glfw.cpp
+		keys.cpp
 		window.cpp
 )
 target_link_libraries(
