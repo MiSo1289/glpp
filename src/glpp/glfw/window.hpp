@@ -29,21 +29,26 @@ namespace glpp::glfw
     {
       public:
         Window(
-			Glfw& glfw,
+            Glfw& glfw,
             WindowMode window_mode,
             std::string const& title);
 
-		[[nodiscard]] auto is_open() -> bool
+        [[nodiscard]] auto is_open() -> bool
         {
             return !glfwWindowShouldClose(glfw_window_.get());
         }
 
+        void update()
+        {
+            glfwSwapBuffers(glfw_window_.get());
+            glfwPollEvents();
+        }
 
-        [[nodiscard]] auto on_key(std::function<void(KeyEvent)> cb) 
-			-> boost::signals2::connection
+        [[nodiscard]] auto on_key(std::function<void(KeyEvent)> cb)
+            -> boost::signals2::connection
         {
             return key_signal_.connect(std::move(cb));
-		}
+        }
 
         void trigger_key_event(KeyEvent event)
         {
