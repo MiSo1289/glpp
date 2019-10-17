@@ -13,9 +13,9 @@ namespace glpp::glfw
 {
     enum class WindowType
     {
-		fullscreen,
-		windowed,
-	};
+        fullscreen,
+        windowed,
+    };
 
     struct WindowMode
     {
@@ -34,22 +34,27 @@ namespace glpp::glfw
     class Window
     {
       public:
-       // Throws glpp::glfw::GlfwError
+        // Throws glpp::glfw::GlfwError
         Window(
             Glfw& glfw,
             WindowMode window_mode,
             std::string const& title);
 
-		// Throws glpp::glfw::GlfwError
+        // Throws glpp::glfw::GlfwError
         [[nodiscard]] auto is_open() const -> bool;
 
-		// Throws glpp::glfw::GlfwError
+        // Throws glpp::glfw::GlfwError
         void update();
 
         [[nodiscard]] auto on_key(std::function<void(KeyEvent)> cb)
             -> boost::signals2::connection;
 
         void trigger_key_event(KeyEvent event) const;
+
+        [[nodiscard]] auto api_ptr() -> GLFWwindow*
+        {
+            return glfw_window_.get();
+		}
 
       private:
         struct Deleter
