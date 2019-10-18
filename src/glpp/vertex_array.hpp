@@ -32,7 +32,7 @@ namespace glpp
             auto buff_bind = ScopedBind{buff};
             glVertexAttribPointer(
                 attribute_loc.value,
-                numComponents,
+                num_components,
                 primitive_type_enumerator_v<T>,
                 false,
                 0,

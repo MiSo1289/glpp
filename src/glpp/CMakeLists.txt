@@ -24,6 +24,7 @@ target_sources(
 	glpp
 	PUBLIC
 		buffer.hpp
+		draw.hpp
 		framebuffer.hpp
 		gl.hpp
 		id.hpp
@@ -36,6 +37,7 @@ target_sources(
 		vertex_array.hpp
 	PRIVATE
 		buffer.cpp
+		draw.cpp
 		framebuffer.cpp
 		gl.cpp
 		id.cpp
