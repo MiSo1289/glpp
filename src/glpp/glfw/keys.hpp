@@ -1,8 +1,7 @@
 #pragma once
 
-#include <bitset>
-
 #include "glpp/glfw/glfw_api.hpp"
+#include "glpp/bit_enum.hpp"
 
 namespace glpp::glfw
 {
@@ -13,15 +12,18 @@ namespace glpp::glfw
         release = GLFW_RELEASE,
     };
 
-    using KeyMod = std::bitset<4>;
+	enum class KeyMod
+    {
+		none = 0,
+		shift = GLFW_MOD_SHIFT,
+		control = GLFW_MOD_CONTROL,
+		alt = GLFW_MOD_ALT,
+		super = GLFW_MOD_SUPER,
+		caps_lock = GLFW_MOD_CAPS_LOCK,
+		num_lock = GLFW_MOD_NUM_LOCK,
+	};
 
-	inline constexpr auto key_mod_none = KeyMod{};
-	inline constexpr auto key_mod_shift = KeyMod{GLFW_MOD_SHIFT};
-	inline constexpr auto key_mod_control = KeyMod{GLFW_MOD_CONTROL};
-	inline constexpr auto key_mod_alt = KeyMod{GLFW_MOD_ALT};
-	inline constexpr auto key_mod_super = KeyMod{GLFW_MOD_SUPER};
-	inline constexpr auto key_mod_caps_lock = KeyMod{GLFW_MOD_CAPS_LOCK};
-	inline constexpr auto key_mod_num_lock = KeyMod{GLFW_MOD_NUM_LOCK};
+	GLPP_MAKE_BIT_ENUM(KeyMod)
 
     enum class KeyCode
     {

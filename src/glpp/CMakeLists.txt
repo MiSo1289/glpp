@@ -23,6 +23,7 @@ target_include_directories(
 target_sources(
 	glpp
 	PUBLIC
+		bit_enum.hpp
 		buffer.hpp
 		draw.hpp
 		framebuffer.hpp
@@ -36,6 +37,7 @@ target_sources(
 		uniform.hpp
 		vertex_array.hpp
 	PRIVATE
+		bit_enum.cpp
 		buffer.cpp
 		draw.cpp
 		framebuffer.cpp
