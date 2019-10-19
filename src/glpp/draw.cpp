@@ -22,12 +22,22 @@ namespace glpp
 
     void draw(
         DrawPrimitive const primitive,
-        int const num_vertices,
-        int const first) noexcept
+        Size const num_vertices,
+        Int32 const first) noexcept
     {
         glDrawArrays(
             static_cast<Enum>(primitive),
             first,
             num_vertices);
+    }
+
+    void draw_points(
+        Size const num_points,
+        Int32 const first,
+        Float32 const point_size) noexcept
+    {
+        glPointSize(point_size);
+        draw(DrawPrimitive::points, num_points, first);
+        glPointSize(1.0f);
     }
 }  // namespace glpp

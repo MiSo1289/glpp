@@ -9,9 +9,9 @@ namespace glpp
 {
     void clear_color(glm::vec4 color) noexcept;
 
-	void clear_depth(Float32 depth) noexcept;
-    
-	void clear_stencil(Int32 stencil) noexcept;
+    void clear_depth(Float32 depth) noexcept;
+
+    void clear_stencil(Int32 stencil) noexcept;
 
     enum class DrawPrimitive : Enum
     {
@@ -26,8 +26,8 @@ namespace glpp
 
     void draw(
         DrawPrimitive primitive,
-        int num_vertices,
-        int first = 0) noexcept;
+        Size num_vertices,
+        Int32 first = 0) noexcept;
 
     template <typename IndexType>
     void draw_indexed(
@@ -41,4 +41,10 @@ namespace glpp
             primitive_type_enumerator_v<IndexT>,
             reinterpret_cast<void*>(indices.offset() * sizeof(IndexType)));
     }
+
+    void draw_points(
+        Size num_points,
+        Int32 first = 0,
+        Float32 point_size = 1.0f) noexcept;
+
 }  // namespace glpp
