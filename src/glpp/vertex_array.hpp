@@ -5,6 +5,7 @@
 #include <glad/glad.h>
 #include "glpp/buffer.hpp"
 #include "glpp/id.hpp"
+#include "glpp/primitive_types.hpp"
 #include "glpp/scoped_bind.hpp"
 #include "glpp/shader_program.hpp"
 #include "glpp/traits.hpp"
@@ -25,7 +26,7 @@ namespace glpp
         void bind_attribute_buffer(
             AttribBufferView<T> buff,
             AttributeLocation attribute_loc,
-            GLuint num_components) noexcept
+            UInt32 num_components) noexcept
         {
             auto vao_bind = ScopedBind{*this};
             glEnableVertexAttribArray(attribute_loc.value);
@@ -46,7 +47,7 @@ namespace glpp
       private:
         struct Deleter
         {
-            void operator()(GLuint size, GLuint* data) const noexcept
+            void operator()(UInt32 size, Id* data) const noexcept
             {
                 glDeleteVertexArrays(size, data);
             }

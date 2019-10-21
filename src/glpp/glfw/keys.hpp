@@ -1,7 +1,9 @@
 #pragma once
 
-#include "glpp/glfw/glfw_api.hpp"
+#include <cstdint>
+
 #include "glpp/bit_enum.hpp"
+#include "glpp/glfw/glfw_api.hpp"
 
 namespace glpp::glfw
 {
@@ -12,18 +14,18 @@ namespace glpp::glfw
         release = GLFW_RELEASE,
     };
 
-	enum class KeyMod
+    enum class KeyMod : std::uint8_t
     {
-		none = 0,
-		shift = GLFW_MOD_SHIFT,
-		control = GLFW_MOD_CONTROL,
-		alt = GLFW_MOD_ALT,
-		super = GLFW_MOD_SUPER,
-		caps_lock = GLFW_MOD_CAPS_LOCK,
-		num_lock = GLFW_MOD_NUM_LOCK,
-	};
+        none = 0,
+        shift = GLFW_MOD_SHIFT,
+        control = GLFW_MOD_CONTROL,
+        alt = GLFW_MOD_ALT,
+        super = GLFW_MOD_SUPER,
+        caps_lock = GLFW_MOD_CAPS_LOCK,
+        num_lock = GLFW_MOD_NUM_LOCK,
+    };
 
-	GLPP_MAKE_BIT_ENUM(KeyMod)
+    GLPP_MAKE_BIT_ENUM(KeyMod)
 
     enum class KeyCode
     {
@@ -149,4 +151,19 @@ namespace glpp::glfw
         right_super = GLFW_KEY_RIGHT_SUPER,
         menu = GLFW_KEY_MENU,
     };
+
+    enum class MouseButton
+    {
+		left = GLFW_MOUSE_BUTTON_LEFT,
+		right = GLFW_MOUSE_BUTTON_RIGHT,
+		middle = GLFW_MOUSE_BUTTON_MIDDLE,
+		button_1 = GLFW_MOUSE_BUTTON_1,
+		button_2 = GLFW_MOUSE_BUTTON_2,
+		button_3 = GLFW_MOUSE_BUTTON_3,
+		button_4 = GLFW_MOUSE_BUTTON_4,
+		button_5 = GLFW_MOUSE_BUTTON_5,
+		button_6 = GLFW_MOUSE_BUTTON_6,
+		button_7 = GLFW_MOUSE_BUTTON_7,
+		button_8 = GLFW_MOUSE_BUTTON_8,
+	};
 }  // namespace glpp::glfw
