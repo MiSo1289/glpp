@@ -17,7 +17,7 @@ namespace glpp
         operator Id() const { return 0u; }
     };
 
-    inline constexpr NullId nullid = {};
+    inline constexpr auto nullid = NullId{};
 
     template <typename Deleter>
     class UniqueId

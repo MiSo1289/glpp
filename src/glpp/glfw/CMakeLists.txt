@@ -18,11 +18,15 @@ target_sources(
 	glpp_glfw
 	PUBLIC
 		error.hpp
+		event_handler_context.hpp
+		events.hpp
 		glfw.hpp
 		keys.hpp
 		window.hpp
 	PRIVATE
 		error.cpp
+		event_handler_context.cpp
+		events.cpp
 		glfw.cpp
 		keys.cpp
 		window.cpp

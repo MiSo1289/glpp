@@ -17,3 +17,5 @@ The following VCPKG packages are required to build this library:
 	* boost-signals2
 	* glfw3
 	* spdlog
+* With BUILD_EXAMPLES:
+	* clara

@@ -18,7 +18,7 @@ namespace glpp
             [](auto lhs, auto rhs) {
                 return lhs->output_loc.value < rhs->output_loc.value;
             });
-        auto draw_buffers = std::vector<Enum>(max_location->output_loc.value + 1, GL_NONE);
+        auto draw_buffers = std::vector<Enum>(gsl::narrow<Enum>(max_location->output_loc.value + 1), GL_NONE);
 
         for (auto const& [texture, output_loc] : attachments)
         {

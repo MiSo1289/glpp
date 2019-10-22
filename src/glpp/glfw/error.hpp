@@ -46,15 +46,17 @@ namespace glpp::glfw
     // Called by Glfw::~Glfw()
     void uninstall_error_handler() noexcept;
 
-    // Called by this library after most GLFW calls.
+    // Called by this library after most GLFW calls
     //
     // Throws glpp::glfw::GlfwError
     void check_error();
-    
-	// Called by this library after GLFW calls in desctructors.
-    //
+
+    // Called by this library after GLFW calls in desctructors
+    // (to prevent further successfull calls from throwing in case
+	// destruction fails)
+	//
     // Throws glpp::glfw::GlfwError
-	void clear_error() noexcept;
+    void clear_error() noexcept;
 
     template <typename... Args, typename... PassedArgs>
     void checked_api_invoke(
@@ -68,37 +70,37 @@ namespace glpp::glfw
     }
 
     template <typename Ret, typename... Args, typename... PassedArgs>
-    [[nodiscard]] auto checked_api_invoke(
+    auto checked_api_invoke(
         Ret (*api_fn)(Args...),
-        PassedArgs const... args) -> Ret
+        PassedArgs&&... args) -> Ret
     {
-        static_assert((std::is_convertible_v<PassedArgs, Args> && ...));
-        
-		auto result = api_fn(args...);
+        static_assert((std::is_convertible_v<PassedArgs&&, Args> && ...));
+
+        auto result = api_fn(std::forward<PassedArgs>(args)...);
         check_error();
 
         return result;
     }
 
-	template <typename... Args, typename... PassedArgs>
+    template <typename... Args, typename... PassedArgs>
     void unchecked_api_invoke(
         void (*api_fn)(Args...),
-        PassedArgs const... args)
+        PassedArgs&&... args)
     {
-        static_assert((std::is_convertible_v<PassedArgs, Args> && ...));
+        static_assert((std::is_convertible_v<PassedArgs&&, Args> && ...));
 
-        api_fn(args...);
+        api_fn(std::forward<PassedArgs>(args)...);
         clear_error();
     }
 
     template <typename Ret, typename... Args, typename... PassedArgs>
-    [[nodiscard]] auto unchecked_api_invoke(
+    auto unchecked_api_invoke(
         Ret (*api_fn)(Args...),
-        PassedArgs const... args) -> Ret
+        PassedArgs&&... args) -> Ret
     {
-        static_assert((std::is_convertible_v<PassedArgs, Args> && ...));
+        static_assert((std::is_convertible_v<PassedArgs&&, Args> && ...));
 
-        auto result = api_fn(args...);
+        auto result = api_fn(std::forward<PassedArgs>(args)...);
         clear_error();
 
         return result;

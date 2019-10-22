@@ -1,6 +1,9 @@
 #pragma once
 
 #include <cstdint>
+#include <optional>
+#include <string_view>
+#include <iosfwd>
 
 #include "glpp/bit_enum.hpp"
 #include "glpp/glfw/glfw_api.hpp"
@@ -13,6 +16,14 @@ namespace glpp::glfw
         repeat = GLFW_REPEAT,
         release = GLFW_RELEASE,
     };
+
+    [[nodiscard]] auto to_string(KeyAction action) noexcept
+		-> std::string_view;
+
+	[[nodiscard]] auto key_action_from_string(std::string_view string) noexcept
+        -> std::optional<KeyAction>;
+
+	auto operator<<(std::ostream& out, KeyAction action) -> std::ostream&;
 
     enum class KeyMod : std::uint8_t
     {
@@ -27,7 +38,9 @@ namespace glpp::glfw
 
     GLPP_MAKE_BIT_ENUM(KeyMod)
 
-    enum class KeyCode
+    auto operator<<(std::ostream& out, KeyMod mod) -> std::ostream&;
+    
+	enum class KeyCode
     {
         unknown = GLFW_KEY_UNKNOWN,
         space = GLFW_KEY_SPACE,
@@ -152,18 +165,31 @@ namespace glpp::glfw
         menu = GLFW_KEY_MENU,
     };
 
+    [[nodiscard]] auto to_string(KeyCode key) noexcept
+        -> std::string_view;
+
+    [[nodiscard]] auto key_code_from_string(std::string_view string) noexcept
+        -> std::optional<KeyCode>;
+    
+	auto operator<<(std::ostream& out, KeyCode key) -> std::ostream&;
+
     enum class MouseButton
     {
-		left = GLFW_MOUSE_BUTTON_LEFT,
-		right = GLFW_MOUSE_BUTTON_RIGHT,
-		middle = GLFW_MOUSE_BUTTON_MIDDLE,
-		button_1 = GLFW_MOUSE_BUTTON_1,
-		button_2 = GLFW_MOUSE_BUTTON_2,
-		button_3 = GLFW_MOUSE_BUTTON_3,
-		button_4 = GLFW_MOUSE_BUTTON_4,
-		button_5 = GLFW_MOUSE_BUTTON_5,
-		button_6 = GLFW_MOUSE_BUTTON_6,
-		button_7 = GLFW_MOUSE_BUTTON_7,
-		button_8 = GLFW_MOUSE_BUTTON_8,
-	};
+        left = GLFW_MOUSE_BUTTON_LEFT,
+        right = GLFW_MOUSE_BUTTON_RIGHT,
+        middle = GLFW_MOUSE_BUTTON_MIDDLE,
+        button_4 = GLFW_MOUSE_BUTTON_4,
+        button_5 = GLFW_MOUSE_BUTTON_5,
+        button_6 = GLFW_MOUSE_BUTTON_6,
+        button_7 = GLFW_MOUSE_BUTTON_7,
+        button_8 = GLFW_MOUSE_BUTTON_8,
+    };
+
+    [[nodiscard]] auto to_string(MouseButton button) noexcept
+        -> std::string_view;
+
+    [[nodiscard]] auto mouse_button_from_string(std::string_view string) noexcept
+        -> std::optional<MouseButton>;
+    
+	auto operator<<(std::ostream& out, MouseButton button) -> std::ostream&;
 }  // namespace glpp::glfw

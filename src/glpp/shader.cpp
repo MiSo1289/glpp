@@ -240,7 +240,7 @@ namespace glpp
 
         glShaderSource(
             id(),
-            fragment_c_strings.size(),
+            gsl::narrow<Size>(fragment_c_strings.size()),
             fragment_c_strings.data(),
             nullptr);
         glCompileShader(id());

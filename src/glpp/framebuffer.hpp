@@ -16,16 +16,12 @@ namespace glpp
         FragOutputLocation output_loc;
     };
 
+	// todo: renderbuffers (at least for depth)
     class Framebuffer
     {
       public:
         Framebuffer() noexcept
           : id_{glGenFramebuffers} {}
-
-        void set_frag_output_texture(Texture& texture, FragOutputLocation output_loc) noexcept
-        {
-            set_frag_output_textures(std::array{TextureAttachment{texture, output_loc}});
-        }
 
         void set_frag_output_textures(gsl::span<TextureAttachment const> attachments) noexcept;
 

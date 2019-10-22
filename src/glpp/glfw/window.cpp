@@ -5,7 +5,6 @@
 #include <stdexcept>
 
 #include <gsl/gsl_util>
-#include <magic_enum.hpp>
 #include "glpp/error.hpp"
 #include "glpp/glfw/error.hpp"
 
@@ -14,41 +13,23 @@ namespace
     extern "C" void glpp_glfw_key_callback(
         GLFWwindow* const window,
         int const key,
-        [[maybe_unused]] int const scancode,
+        int const scan_code,
         int const action,
         int const mods) noexcept
     {
-        try
-        {
-            auto* const user_ptr = glpp::glfw::checked_api_invoke(
-                &glfwGetWindowUserPointer,
-                window);
+        auto* const user_ptr = glpp::glfw::checked_api_invoke(
+            &glfwGetWindowUserPointer,
+            window);
 
-            assert(user_ptr != nullptr);
-            static_cast<glpp::glfw::Window*>(user_ptr)
-                ->trigger_key_event({
-                    magic_enum::enum_cast<glpp::glfw::KeyCode>(key)
-                        .value_or(glpp::glfw::KeyCode::unknown),
-                    magic_enum::enum_cast<glpp::glfw::KeyAction>(action)
-                        .value(),
-                    magic_enum::enum_cast<glpp::glfw::KeyMod>(
-                        gsl::narrow<std::uint8_t>(mods))
-                        .value(),
-                });
-        }
-        catch (std::exception const& error)
-        {
-            std::fprintf(
-                stderr,
-                "Uncaught exception when processing GLFW key event: %s\n",
-                error.what());
-        }
-        catch (...)
-        {
-            std::fprintf(
-                stderr,
-                "Unknown uncaught exception when processing GLFW key event\n");
-        }
+        assert(user_ptr != nullptr);
+
+        static_cast<glpp::glfw::EventHandlerContext*>(user_ptr)
+            ->trigger_key_event({
+                static_cast<glpp::glfw::KeyCode>(key),
+                scan_code,
+                static_cast<glpp::glfw::KeyAction>(action),
+                static_cast<glpp::glfw::KeyMod>(mods),
+            });
     }
 
     extern "C" void glpp_glfw_mouse_button_callback(
@@ -57,70 +38,51 @@ namespace
         int const action,
         int const mods) noexcept
     {
-        try
-        {
-            auto* const user_ptr = glpp::glfw::checked_api_invoke(
-                &glfwGetWindowUserPointer,
-                window);
+        auto* const user_ptr = glpp::glfw::checked_api_invoke(
+            &glfwGetWindowUserPointer,
+            window);
 
-            assert(user_ptr != nullptr);
-            static_cast<glpp::glfw::Window*>(user_ptr)
-                ->trigger_mouse_button_event({
-                    magic_enum::enum_cast<glpp::glfw::MouseButton>(button)
-                        .value_or(glpp::glfw::KeyCode::unknown),
-                    magic_enum::enum_cast<glpp::glfw::KeyAction>(action)
-                        .value(),
-                    magic_enum::enum_cast<glpp::glfw::KeyMod>(
-						gsl::narrow<std::uint8_t>(mods))
-                        .value(),
-                });
-        }
-        catch (std::exception const& error)
-        {
-            std::fprintf(
-                stderr,
-                "Uncaught exception when processing GLFW mouse button event: %s\n",
-                error.what());
-        }
-        catch (...)
-        {
-            std::fprintf(
-                stderr,
-                "Unknown uncaught exception when processing GLFW mouse button event\n");
-        }
+        assert(user_ptr != nullptr);
+        static_cast<glpp::glfw::EventHandlerContext*>(user_ptr)
+            ->trigger_mouse_button_event({
+                static_cast<glpp::glfw::MouseButton>(button),
+                static_cast<glpp::glfw::KeyAction>(action),
+                static_cast<glpp::glfw::KeyMod>(mods),
+            });
     }
 
-	extern "C" void glpp_glfw_mouse_move_callback(
+    extern "C" void glpp_glfw_mouse_move_callback(
         GLFWwindow* const window,
         double const xpos,
-		double const ypos) noexcept
+        double const ypos) noexcept
     {
-        try
-        {
-            auto* const user_ptr = glpp::glfw::checked_api_invoke(
-                &glfwGetWindowUserPointer,
-                window);
+        auto* const user_ptr = glpp::glfw::checked_api_invoke(
+            &glfwGetWindowUserPointer,
+            window);
 
-            assert(user_ptr != nullptr);
-            static_cast<glpp::glfw::Window*>(user_ptr)
-                ->trigger_mouse_move_event({
-                    xpos,
-					ypos,
-                });
-        }
-        catch (std::exception const& error)
-        {
-            std::fprintf(
-                stderr,
-                "Uncaught exception when processing GLFW mouse move event: %s\n",
-                error.what());
-        }
-        catch (...)
-        {
-            std::fprintf(
-                stderr,
-                "Unknown uncaught exception when processing GLFW mouse move event\n");
-        }
+        assert(user_ptr != nullptr);
+        static_cast<glpp::glfw::EventHandlerContext*>(user_ptr)
+            ->trigger_mouse_move_event({
+                xpos,
+                ypos,
+            });
+    }
+
+    extern "C" void glpp_glfw_mouse_scroll_callback(
+        GLFWwindow* const window,
+        double const xoff,
+        double const yoff) noexcept
+    {
+        auto* const user_ptr = glpp::glfw::checked_api_invoke(
+            &glfwGetWindowUserPointer,
+            window);
+
+        assert(user_ptr != nullptr);
+        static_cast<glpp::glfw::EventHandlerContext*>(user_ptr)
+            ->trigger_mouse_scroll_event({
+                xoff,
+                yoff,
+            });
     }
 }  // namespace
 
@@ -141,6 +103,7 @@ namespace glpp::glfw
                   : nullptr,
               nullptr),
       }
+      , event_handler_context_{*this}
     {
         if (!glfw_window_)
         {
@@ -151,10 +114,12 @@ namespace glpp::glfw
             &glfwMakeContextCurrent,
             glfw_window_.get());
         glfw.load_gl();
+
         checked_api_invoke(
             &glfwSetWindowUserPointer,
             glfw_window_.get(),
-            this);
+            &event_handler_context_);
+
         checked_api_invoke(
             &glfwSetKeyCallback,
             glfw_window_.get(),
@@ -167,6 +132,10 @@ namespace glpp::glfw
             &glfwSetCursorPosCallback,
             glfw_window_.get(),
             &glpp_glfw_mouse_move_callback);
+        checked_api_invoke(
+            &glfwSetScrollCallback,
+            glfw_window_.get(),
+            &glpp_glfw_mouse_scroll_callback);
     }
 
     auto Window::is_open() const -> bool
@@ -176,11 +145,16 @@ namespace glpp::glfw
             glfw_window_.get());
     }
 
-    void Window::update()
+    void Window::poll_events()
+    {
+        checked_api_invoke(&glfwPollEvents);
+        event_handler_context_.rethrow_any_error();
+    }
+
+    void Window::swap_buffers()
     {
         checked_api_invoke(&glfwSwapBuffers, glfw_window_.get());
-        checked_api_invoke(&glfwPollEvents);
-    }
+	}
 
     auto Window::on_key(std::function<void(KeyEvent)> cb)
         -> boost::signals2::connection
@@ -200,19 +174,10 @@ namespace glpp::glfw
         return mouse_move_signal_.connect(std::move(cb));
     }
 
-    void Window::trigger_key_event(KeyEvent event) const
+    auto Window::on_mouse_scroll(std::function<void(MouseScrollEvent)> cb)
+        -> boost::signals2::connection
     {
-        key_signal_(event);
-    }
-
-    void Window::trigger_mouse_button_event(MouseButtonEvent event) const
-    {
-        mouse_button_signal_(event);
-    }
-
-    void Window::trigger_mouse_move_event(MouseMoveEvent event) const
-    {
-        mouse_move_signal_(event);
+        return mouse_scroll_signal_.connect(std::move(cb));
     }
 
     auto Window::api_ptr() noexcept -> GLFWwindow*
