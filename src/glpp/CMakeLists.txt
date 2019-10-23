@@ -1,3 +1,4 @@
+find_package(OpenGL REQUIRED)
 find_package(fmt CONFIG REQUIRED)
 find_package(glad CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
@@ -54,6 +55,7 @@ target_sources(
 target_link_libraries(
 	glpp 
 	PUBLIC 
+		OpenGL::GL
 		fmt::fmt
 		glad::glad
 		glm

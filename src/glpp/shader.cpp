@@ -231,7 +231,8 @@ namespace glpp
 
     void Shader::compile(gsl::span<std::string const> source_fragments)
     {
-        auto fragment_c_strings = std::vector<char const*>(source_fragments.size());
+        auto fragment_c_strings = std::vector<char const*>{};
+        fragment_c_strings.reserve(source_fragments.size());
         std::transform(
             source_fragments.begin(),
             source_fragments.end(),

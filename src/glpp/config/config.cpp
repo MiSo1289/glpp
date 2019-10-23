@@ -1,10 +1,67 @@
 #include "glpp/config/config.hpp"
 
 #include <algorithm>
+#include <cassert>
+#include <optional>
 #include <string>
+#include <string_view>
 
 #include <magic_enum.hpp>
 #include "glpp/config/error.hpp"
+
+namespace magic_enum
+{
+    template <>
+    struct enum_range<glpp::GlslVersionNumber>
+    {
+        static constexpr int min = static_cast<int>(glpp::GlslVersionNumber::glsl_110);
+        static constexpr int max = static_cast<int>(glpp::GlslVersionNumber::glsl_430);
+    };
+}  // namespace magic_enum
+
+namespace
+{
+    // Magic enum cannot be used - the constants are too large
+    constexpr auto shader_type_names = std::array{
+        std::pair{glpp::ShaderType::compute_shader, "compute_shader"},
+        std::pair{glpp::ShaderType::vertex_shader, "vertex_shader"},
+        std::pair{glpp::ShaderType::tess_control_shader, "tess_control_shader"},
+        std::pair{glpp::ShaderType::tess_evaluation_shader, "tess_evaluation_shader"},
+        std::pair{glpp::ShaderType::geometry_shader, "geometry_shader"},
+        std::pair{glpp::ShaderType::fragment_shader, "fragment_shader"},
+    };
+
+    [[nodiscard]] auto to_string(glpp::ShaderType const shader_type)
+        -> std::string_view
+    {
+        auto iter = std::find_if(
+            shader_type_names.begin(),
+            shader_type_names.end(),
+            [shader_type](auto pair) {
+                return pair.first == shader_type;
+            });
+
+        assert(iter != shader_type_names.end());
+
+        return iter->second;
+    }
+
+    [[nodiscard]] auto shader_type_from_string(std::string_view const name)
+        -> std::optional<glpp::ShaderType>
+    {
+        if (auto iter = std::find_if(
+                shader_type_names.begin(),
+                shader_type_names.end(),
+                [name](auto pair) {
+                    return pair.second == name;
+                });
+            iter != shader_type_names.end())
+        {
+            return iter->first;
+        }
+        return std::nullopt;
+    }
+}  // namespace
 
 namespace glpp::config
 {
@@ -17,7 +74,7 @@ namespace glpp::config
         }
 
         json = {
-            {"shaderType", magic_enum::enum_name(shader_config.shader_type)},
+            {"shaderType", to_string(shader_config.shader_type)},
             {"sources", std::move(sources)},
         };
     }
@@ -25,7 +82,7 @@ namespace glpp::config
     void from_json(nlohmann::json const& json, ShaderConfig& shader_config)
     {
         if (auto shader_type
-            = magic_enum::enum_cast<ShaderType>(json.at("shaderType").get<std::string>()))
+            = shader_type_from_string(json.at("shaderType").get<std::string>()))
         {
             shader_config.shader_type = *shader_type;
             shader_config.sources.clear();
@@ -80,7 +137,8 @@ namespace glpp::config
     {
         auto const& version = json.at("glslVersion");
         if (auto version_number
-            = magic_enum::enum_cast<GlslVersionNumber>(version.at("versionNumber").get<int>()))
+            = magic_enum::enum_cast<GlslVersionNumber>(
+                version.at("versionNumber").get<std::uint16_t>()))
         {
             shader_program_config.glsl_version.version_number = *version_number;
             if (auto profile

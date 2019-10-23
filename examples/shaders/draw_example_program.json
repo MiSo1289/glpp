@@ -1,0 +1,24 @@
+{
+  "glslVersion": {
+    "versionNumber": 430,
+    "profile": "core"
+  },
+  "shaders": [
+    {
+      "shaderType": "vertex_shader",
+      "sources": [
+        "examples/shaders/draw_example_vertex.glsl"
+      ]
+    },
+    {
+      "shaderType": "fragment_shader",
+      "sources": [
+        "examples/shaders/draw_example_frag.glsl"
+      ]
+    }
+  ],
+  "definitions": [],
+  "includeDirectories": [
+    "examples/shaders"
+  ]
+}
