@@ -7,9 +7,9 @@
 
 #include <boost/signals2.hpp>
 #include "glpp/error.hpp"
+#include "glpp/glfw/api_event_context.hpp"
 #include "glpp/glfw/glfw.hpp"
 #include "glpp/glfw/keys.hpp"
-#include "glpp/glfw/event_handler_context.hpp"
 
 namespace glpp::glfw
 {
@@ -38,32 +38,43 @@ namespace glpp::glfw
         // Throws glpp::glfw::GlfwError
         [[nodiscard]] auto is_open() const -> bool;
 
-		// Poll events and pass them to user event handlers.
-		// If a handler throws, no other handlers will get called
-		// and all currently unprocessed events will be lost.
-		// The exception will get propagated.
-		// 
+        // Poll events and pass them to user event handlers.
+        // If a handler throws, no other handlers will get called
+        // and all currently unprocessed events will be lost.
+        // The exception will get propagated.
+        //
         // Throws glpp::glfw::GlfwError
         void poll_events();
 
-		// Display the back opengl buffer on screen.
-		//
-		// Throws glpp::glfw::GlfwError
-		void swap_buffers();
+        // Display the back opengl buffer on screen.
+        //
+        // Throws glpp::glfw::GlfwError
+        void swap_buffers();
 
-        [[nodiscard]] auto on_key(std::function<void(KeyEvent)> cb)
+        [[nodiscard]] auto on_cursor_pos(std::function<void(CursorPosEvent const&)> cb)
             -> boost::signals2::connection;
 
-        [[nodiscard]] auto on_mouse_button(std::function<void(MouseButtonEvent)> cb)
+        [[nodiscard]] auto on_mouse_button(std::function<void(MouseButtonEvent const&)> cb)
             -> boost::signals2::connection;
 
-        [[nodiscard]] auto on_mouse_move(std::function<void(MouseMoveEvent)> cb)
+        [[nodiscard]] auto on_key(std::function<void(KeyEvent const&)> cb)
             -> boost::signals2::connection;
 
-        [[nodiscard]] auto on_mouse_scroll(std::function<void(MouseScrollEvent)> cb)
+        [[nodiscard]] auto on_char(std::function<void(CharEvent const&)> cb)
+            -> boost::signals2::connection;
+
+        [[nodiscard]] auto on_drop(std::function<void(DropEvent const&)> cb)
+            -> boost::signals2::connection;
+
+        [[nodiscard]] auto on_scroll(std::function<void(ScrollEvent const&)> cb)
+            -> boost::signals2::connection;
+
+        [[nodiscard]] auto on_framebuffer_size(std::function<void(FrameBufferSizeEvent const&)> cb)
             -> boost::signals2::connection;
 
         [[nodiscard]] auto api_ptr() noexcept -> GLFWwindow*;
+
+		[[nodiscard]] auto api_event_context() noexcept -> ApiEventContext&;
 
       private:
         struct Deleter
@@ -71,13 +82,21 @@ namespace glpp::glfw
             void operator()(GLFWwindow* glfw_window) const noexcept;
         };
 
-		friend class EventHandlerContext;
-
         std::unique_ptr<GLFWwindow, Deleter> glfw_window_;
-        boost::signals2::signal<void(KeyEvent)> key_signal_;
-        boost::signals2::signal<void(MouseButtonEvent)> mouse_button_signal_;
-        boost::signals2::signal<void(MouseMoveEvent)> mouse_move_signal_;
-        boost::signals2::signal<void(MouseScrollEvent)> mouse_scroll_signal_;
-        EventHandlerContext event_handler_context_;
+        ApiEventContext api_event_context_;
+        boost::signals2::signal<void(CursorPosEvent const&)> cursor_pos_signal_;
+        boost::signals2::signal<void(MouseButtonEvent const&)> mouse_button_signal_;
+        boost::signals2::signal<void(KeyEvent const&)> key_signal_;
+        boost::signals2::signal<void(CharEvent const&)> char_signal_;
+        boost::signals2::signal<void(DropEvent const&)> drop_signal_;
+        boost::signals2::signal<void(ScrollEvent const&)> scroll_signal_;
+        boost::signals2::signal<void(FrameBufferSizeEvent const&)> framebuffer_size_signal_;
+        boost::signals2::scoped_connection api_cursor_pos_cb_conn;
+        boost::signals2::scoped_connection api_mouse_button_cb_conn;
+        boost::signals2::scoped_connection api_key_cb_conn;
+        boost::signals2::scoped_connection api_char_cb_conn;
+        boost::signals2::scoped_connection api_drop_cb_conn;
+        boost::signals2::scoped_connection api_scroll_cb_conn;
+        boost::signals2::scoped_connection api_framebuffer_size_cb_conn;
     };
 }  // namespace glpp::glfw

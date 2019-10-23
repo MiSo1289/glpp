@@ -1,15 +1,16 @@
 #pragma once
 
+#include <filesystem>
+#include <vector>
+
 #include "glpp/glfw/keys.hpp"
 
 namespace glpp::glfw
 {
-    struct KeyEvent
+    struct CursorPosEvent
     {
-        KeyCode key;
-        int scan_code;
-        KeyAction action;
-        KeyMod mods;
+        double xpos;
+        double ypos;
     };
 
     struct MouseButtonEvent
@@ -19,15 +20,33 @@ namespace glpp::glfw
         KeyMod mods;
     };
 
-    struct MouseMoveEvent
+    struct KeyEvent
     {
-        double xpos;
-        double ypos;
+        KeyCode key;
+        int scan_code;
+        KeyAction action;
+        KeyMod mods;
     };
 
-    struct MouseScrollEvent
+    struct CharEvent
+    {
+        unsigned codepoint;
+    };
+
+    struct DropEvent
+    {
+        std::vector<std::filesystem::path> files;
+    };
+
+    struct ScrollEvent
     {
         double xoff;
         double yoff;
     };
-}
+
+    struct FrameBufferSizeEvent
+    {
+        int width;
+        int height;
+	};
+}  // namespace glpp::glfw

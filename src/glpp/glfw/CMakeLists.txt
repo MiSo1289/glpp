@@ -17,15 +17,15 @@ target_include_directories(
 target_sources(
 	glpp_glfw
 	PUBLIC
+		api_event_context.hpp
 		error.hpp
-		event_handler_context.hpp
 		events.hpp
 		glfw.hpp
 		keys.hpp
 		window.hpp
 	PRIVATE
+		api_event_context.cpp
 		error.cpp
-		event_handler_context.cpp
 		events.cpp
 		glfw.cpp
 		keys.cpp

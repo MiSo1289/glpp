@@ -98,7 +98,7 @@ auto main(int const argc, char const* const* const argv) noexcept -> int
 
         if (log_mouse_move_events)
         {
-            mouse_move_cb_conn = window.on_mouse_move([](auto const event) {
+            mouse_move_cb_conn = window.on_cursor_pos([](auto const event) {
                 std::cout << fmt::format(
                     "Mouse position {0} {1}\n",
                     event.xpos,
@@ -108,7 +108,7 @@ auto main(int const argc, char const* const* const argv) noexcept -> int
 
         if (log_mouse_scroll_events)
         {
-            mouse_scroll_cb_conn = window.on_mouse_scroll([](auto const event) {
+            mouse_scroll_cb_conn = window.on_scroll([](auto const event) {
                 std::cout << fmt::format(
                     "Mouse scroll offset {0} {1}\n",
                     event.xoff,
