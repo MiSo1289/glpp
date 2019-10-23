@@ -35,6 +35,12 @@ namespace glpp::glfw
             WindowMode window_mode,
             std::string const& title);
 
+		Window(Window const&) = delete;
+        Window(Window&&) = delete;
+        
+		auto operator=(Window const&) -> Window& = delete;
+		auto operator=(Window&&) -> Window& = delete;
+
         // Throws glpp::glfw::GlfwError
         [[nodiscard]] auto is_open() const -> bool;
 
