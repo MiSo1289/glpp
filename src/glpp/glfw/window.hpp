@@ -97,12 +97,12 @@ namespace glpp::glfw
         boost::signals2::signal<void(DropEvent const&)> drop_signal_;
         boost::signals2::signal<void(ScrollEvent const&)> scroll_signal_;
         boost::signals2::signal<void(FrameBufferSizeEvent const&)> framebuffer_size_signal_;
-        boost::signals2::scoped_connection api_cursor_pos_cb_conn;
-        boost::signals2::scoped_connection api_mouse_button_cb_conn;
-        boost::signals2::scoped_connection api_key_cb_conn;
-        boost::signals2::scoped_connection api_char_cb_conn;
-        boost::signals2::scoped_connection api_drop_cb_conn;
-        boost::signals2::scoped_connection api_scroll_cb_conn;
-        boost::signals2::scoped_connection api_framebuffer_size_cb_conn;
+        boost::signals2::scoped_connection api_cursor_pos_cb_conn_;
+        boost::signals2::scoped_connection api_mouse_button_cb_conn_;
+        boost::signals2::scoped_connection api_key_cb_conn_;
+        boost::signals2::scoped_connection api_char_cb_conn_;
+        boost::signals2::scoped_connection api_drop_cb_conn_;
+        boost::signals2::scoped_connection api_scroll_cb_conn_;
+        boost::signals2::scoped_connection api_framebuffer_size_cb_conn_;
     };
 }  // namespace glpp::glfw

@@ -38,7 +38,7 @@ namespace glpp
         glDrawElements(
             static_cast<Enum>(primitive),
             static_cast<Size>(indices.size()),
-            primitive_type_enumerator_v<IndexT>,
+            primitive_type_enumerator_v<IndexType>,
             reinterpret_cast<void*>(indices.offset() * sizeof(IndexType)));
     }
 

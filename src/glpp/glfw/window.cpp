@@ -135,12 +135,12 @@ namespace glpp::glfw
                   : nullptr,
               nullptr),
       }
-      , api_cursor_pos_cb_conn{
+      , api_cursor_pos_cb_conn_{
             api_event_context_.on_api_cursor_pos([this](double x, double y) {
                 cursor_pos_signal_({x, y});
             }),
         }
-      , api_mouse_button_cb_conn{
+      , api_mouse_button_cb_conn_{
             api_event_context_.on_api_mouse_button([this](int button, int action, int modifiers) {
                 mouse_button_signal_({
                     static_cast<glpp::glfw::MouseButton>(button),
@@ -149,7 +149,7 @@ namespace glpp::glfw
                 });
             }),
         }
-      , api_key_cb_conn{
+      , api_key_cb_conn_{
             api_event_context_.on_api_key([this](int key, int scancode, int action, int modifiers) {
                 key_signal_({
                     static_cast<glpp::glfw::KeyCode>(key),
@@ -159,24 +159,24 @@ namespace glpp::glfw
                 });
             }),
         }
-      , api_char_cb_conn{
+      , api_char_cb_conn_{
             api_event_context_.on_api_char([this](unsigned codepoint) {
                 char_signal_({codepoint});
             }),
         }
-      , api_drop_cb_conn{
+      , api_drop_cb_conn_{
             api_event_context_.on_api_drop([this](int count, char const** filenames) {
                 auto files = std::vector<std::filesystem::path>();
                 std::copy(filenames, filenames + count, std::back_inserter(files));
                 drop_signal_({std::move(files)});
             }),
         }
-      , api_scroll_cb_conn{
+      , api_scroll_cb_conn_{
             api_event_context_.on_api_scroll([this](double x, double y) {
                 scroll_signal_({x, y});
             }),
         }
-      , api_framebuffer_size_cb_conn{
+      , api_framebuffer_size_cb_conn_{
             api_event_context_.on_api_framebuffer_size([this](int width, int height) {
                 framebuffer_size_signal_({width, height});
             }),
