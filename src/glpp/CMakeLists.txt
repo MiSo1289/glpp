@@ -27,6 +27,7 @@ target_sources(
 		bit_enum.hpp
 		buffer.hpp
 		draw.hpp
+		error.hpp
 		framebuffer.hpp
 		gl.hpp
 		id.hpp
@@ -34,6 +35,7 @@ target_sources(
 		scoped_bind.hpp
 		shader.hpp
 		shader_program.hpp
+		texture.hpp
 		traits.hpp
 		uniform.hpp
 		vertex_array.hpp
@@ -41,6 +43,7 @@ target_sources(
 		bit_enum.cpp
 		buffer.cpp
 		draw.cpp
+		error.cpp
 		framebuffer.cpp
 		gl.cpp
 		id.cpp
@@ -48,6 +51,7 @@ target_sources(
 		scoped_bind.cpp
 		shader.cpp
 		shader_program.cpp
+		texture.cpp
 		traits.cpp
 		uniform.cpp
 		vertex_array.cpp

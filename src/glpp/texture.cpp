@@ -6,30 +6,30 @@ namespace glpp
       : id_{glGenTextures} {}
 
     Texture::Texture(
-        int width,
-        int height,
-        std::uint8_t const* data,
-        Texture::Type type,
-        bool tile,
-        bool mipmap) noexcept
+        int const width,
+        int const height,
+        std::uint8_t const* const data,
+        Texture::Type const type,
+        bool const tile,
+        bool const mipmap) noexcept
       : Texture{}
     {
         load(width, height, data, type);
-        if (tile) enableTiling();
-        if (mipmap) enableLinearMipmapping();
+        if (tile) enable_tiling();
+        if (mipmap) enable_linear_mipmapping();
     }
 
     void Texture::load(
-        int width,
-        int height,
-        std::uint8_t const* data,
-        Texture::Type type) noexcept
+        int const width,
+        int const height,
+        std::uint8_t const* const data,
+        Texture::Type const type) noexcept
     {
         bind();
         glTexImage2D(
             GL_TEXTURE_2D,
             0,
-            type.internalFormat,
+            type.internal_format,
             width,
             height,
             0,
@@ -56,7 +56,7 @@ namespace glpp
         glGenerateMipmap(GL_TEXTURE_2D);
     }
 
-    void Texture::Deleter::operator()(UInt32 size, Id* data) const noexcept
+    void Texture::Deleter::operator()(UInt32 const size, Id* const data) const noexcept
     {
         glDeleteTextures(size, data);
     }
