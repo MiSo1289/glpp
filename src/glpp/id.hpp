@@ -76,7 +76,7 @@ namespace glpp
 
         UniqueIdArray(UniqueIdArray const&) = delete;
 
-        UniqueIdArray(UniqueIdArray&& other) noexcept { swap(other); }
+        UniqueIdArray(UniqueIdArray&& other) noexcept { swap(*this, other); }
 
         ~UniqueIdArray() noexcept { deleter_(size, ids_.data()); }
 

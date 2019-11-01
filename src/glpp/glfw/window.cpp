@@ -75,7 +75,7 @@ namespace
     extern "C" void glpp_glfw_drop_callback(
         GLFWwindow* const window,
         int const count,
-        char const** filenames) noexcept
+        char const** const filenames) noexcept
     {
         auto* const user_ptr = glpp::glfw::unchecked_api_invoke(
             &glfwGetWindowUserPointer,

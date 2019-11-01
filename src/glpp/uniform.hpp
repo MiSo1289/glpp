@@ -39,8 +39,8 @@ namespace glpp
 
         void unbind() const noexcept
         {
-            glUniform1i(location().value, 0);
             glActiveTexture(GL_TEXTURE0);
+            glUniform1i(location().value, 0);
         }
 
       private:
