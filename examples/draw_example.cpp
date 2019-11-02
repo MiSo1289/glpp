@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <thread>
 
+#include <glm/glm.hpp>
 #include <nlohmann/json.hpp>
 #include "glpp/buffer.hpp"
 #include "glpp/config/config.hpp"
@@ -27,7 +28,7 @@ auto main() noexcept -> int
 {
     try
     {
-		// Load the shader program config file
+        // Load the shader program config file
         auto shader_cfg_file = std::ifstream{shader_cfg_path};
         if (!shader_cfg_file.is_open())
         {
@@ -38,7 +39,7 @@ auto main() noexcept -> int
         auto shader_cfg_json = nlohmann::json();
         shader_cfg_file >> shader_cfg_json;
 
-		// Create the window
+        // Create the window
         auto glfw = glpp::glfw::Glfw{};
         auto window = glpp::glfw::Window{
             glfw,
@@ -51,7 +52,7 @@ auto main() noexcept -> int
             "Draw example",
         };
 
-		// Create GL structures
+        // Create GL structures
         auto shader_program = glpp::config::make_shader_program(shader_cfg_json);
         auto vertex_pos_buffer = glpp::StaticAttribBuffer<float>{};
         auto vertex_array = glpp::VertexArray{};
@@ -59,11 +60,11 @@ auto main() noexcept -> int
             vertex_pos_buffer.view(),
             glpp::AttributeLocation{0},
             3);
-        auto color_uniform = glpp::Vec4Uniform{
+        auto color_uniform = glpp::Uniform<glm::vec4>{
             glpp::UniformLocation{0},
         };
 
-		// Load vertex positions
+        // Load vertex positions
         vertex_pos_buffer.buffer_data(std::array{
             -0.5f,
             -0.5f,
@@ -77,17 +78,17 @@ auto main() noexcept -> int
             0.5f,
             -1.0f,
         });
-        
-		// Bind the shader before loading a uniform
-		auto shader_binding = glpp::ScopedBind{shader_program};
-		// Set the color
+
+        // Bind the shader before loading a uniform
+        auto shader_binding = glpp::ScopedBind{shader_program};
+        // Set the color
         color_uniform.load({1.0f, 0.0f, 0.0f, 1.0f});
 
-		// Bind the vertex array object for drawing
+        // Bind the vertex array object for drawing
         auto vao_binding = glpp::ScopedBind{vertex_array};
 
-		// Draw the scene once and display it
-		glpp::clear_color({0.0f, 0.0f, 0.0f, 1.0f});
+        // Draw the scene once and display it
+        glpp::clear_color({0.0f, 0.0f, 0.0f, 1.0f});
         glpp::draw(glpp::DrawPrimitive::triangles, 3);
         window.swap_buffers();
 
@@ -95,7 +96,7 @@ auto main() noexcept -> int
         {
             using namespace std::chrono_literals;
 
-			std::this_thread::sleep_for(10ms);
+            std::this_thread::sleep_for(10ms);
             window.poll_events();
         }
     }

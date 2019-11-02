@@ -8,10 +8,10 @@
 
 namespace glpp
 {
-    class Uniform
+    class UniformBase
     {
       public:
-        explicit Uniform(UniformLocation location) noexcept
+        explicit UniformBase(UniformLocation const location) noexcept
           : location_(location) {}
 
         [[nodiscard]] auto location() const noexcept -> UniformLocation { return location_; }
@@ -25,11 +25,14 @@ namespace glpp
         UInt32 index;
     };
 
-    class TextureSamplerUniform : public Uniform
+    class TextureSamplerUniform : public UniformBase
     {
       public:
-        TextureSamplerUniform(UniformLocation location, SamplerUnit sampler_unit) noexcept
-          : Uniform(location), sampler_unit_(sampler_unit) {}
+        TextureSamplerUniform(
+            UniformLocation const location,
+            SamplerUnit const sampler_unit) noexcept
+          : UniformBase(location)
+          , sampler_unit_(sampler_unit) {}
 
         void bind() const noexcept
         {
@@ -47,144 +50,137 @@ namespace glpp
         SamplerUnit sampler_unit_;
     };
 
-    class Mat2Uniform : public Uniform
-    {
-      public:
-        using Uniform::Uniform;
-
-        void load(glm::mat2 mat) noexcept
-        {
-            glUniformMatrix2fv(location().value, 1, false, glm::value_ptr(mat));
-        }
-    };
-
-    class Mat3Uniform : public Uniform
-    {
-      public:
-        using Uniform::Uniform;
-
-        void load(glm::mat3 mat) noexcept
-        {
-            glUniformMatrix3fv(location().value, 1, false, glm::value_ptr(mat));
-        }
-    };
-
-    class Mat4Uniform : public Uniform
-    {
-      public:
-        using Uniform::Uniform;
-
-        void load(glm::mat4 mat) noexcept
-        {
-            glUniformMatrix4fv(location().value, 1, false, glm::value_ptr(mat));
-        }
-    };
-
-    class Vec2Uniform : public Uniform
-    {
-      public:
-        using Uniform::Uniform;
-
-        void load(glm::vec2 vec) noexcept
-        {
-            glUniform2fv(location().value, 1, glm::value_ptr(vec));
-        }
-    };
-
-    class Vec3Uniform : public Uniform
-    {
-      public:
-        using Uniform::Uniform;
-
-        void load(glm::vec3 vec) noexcept
-        {
-            glUniform3fv(location().value, 1, glm::value_ptr(vec));
-        }
-    };
-
-    class Vec4Uniform : public Uniform
-    {
-      public:
-        using Uniform::Uniform;
-
-        void load(glm::vec4 vec) noexcept
-        {
-            glUniform4fv(location().value, 1, glm::value_ptr(vec));
-        }
-    };
-
-    template <typename T, std::size_t size>
+    template <typename T>
     class ArrayUniform;
 
-    template <std::size_t size>
-    class ArrayUniform<Float32, size> : public Uniform
+    template <typename T>
+    class Uniform
     {
       public:
-        using Uniform::Uniform;
-
-        void load(gsl::span<Float32 const> buffer) noexcept
+        explicit Uniform(UniformLocation const location) noexcept
+          : impl_{location}
         {
-            assert(buffer.size() <= size);
+        }
+
+        [[nodiscard]] auto location() const noexcept -> UniformLocation
+        {
+            return impl_.location();
+        }
+
+        void load(T const value) noexcept
+        {
+            impl_.load(gsl::span{&value, 1});
+        }
+
+      private:
+        ArrayUniform<T> impl_;
+    };
+
+    template <>
+    class ArrayUniform<Float32> : public UniformBase
+    {
+      public:
+        using UniformBase::UniformBase;
+
+        void load(gsl::span<Float32 const> const buffer) noexcept
+        {
             glUniform1fv(location().value, static_cast<GLsizei>(buffer.size()), buffer.data());
         }
     };
 
-    template <std::size_t size>
-    class ArrayUniform<Int32, size> : public Uniform
+    template <>
+    class ArrayUniform<Int32> : public UniformBase
     {
       public:
-        using Uniform::Uniform;
+        using UniformBase::UniformBase;
 
-        void load(gsl::span<Int32 const> buffer) noexcept
+        void load(gsl::span<Int32 const> const buffer) noexcept
         {
-            assert(buffer.size() <= size);
             glUniform1iv(location().value, static_cast<GLsizei>(buffer.size()), buffer.data());
         }
     };
 
-    template <std::size_t size>
-    class ArrayUniform<UInt32, size> : public Uniform
+    template <>
+    class ArrayUniform<UInt32> : public UniformBase
     {
       public:
-        using Uniform::Uniform;
+        using UniformBase::UniformBase;
 
-        void load(gsl::span<UInt32 const> buffer) noexcept
+        void load(gsl::span<UInt32 const> const buffer) noexcept
         {
-            assert(buffer.size() <= size);
             glUniform1uiv(location().value, static_cast<GLsizei>(buffer.size()), buffer.data());
         }
     };
 
-    class FloatUniform : public Uniform
+    template <>
+    class ArrayUniform<glm::mat2> : public UniformBase
     {
       public:
-        using Uniform::Uniform;
+        using UniformBase::UniformBase;
 
-        void load(Float32 value) noexcept
+        void load(gsl::span<glm::mat2 const> const buffer) noexcept
         {
-            glUniform1fv(location().value, 1, &value);
+            glUniformMatrix2fv(location().value, static_cast<GLsizei>(buffer.size()), false, glm::value_ptr(buffer[0]));
         }
     };
 
-    class UIntUniform : public Uniform
+    template <>
+    class ArrayUniform<glm::mat3> : public UniformBase
     {
       public:
-        using Uniform::Uniform;
+        using UniformBase::UniformBase;
 
-        void load(UInt32 value) noexcept
+        void load(gsl::span<glm::mat3 const> const buffer) noexcept
         {
-            glUniform1uiv(location().value, 1, &value);
+            glUniformMatrix3fv(location().value, static_cast<GLsizei>(buffer.size()), false, glm::value_ptr(buffer[0]));
         }
     };
 
-    class IntUniform : public Uniform
+    template <>
+    class ArrayUniform<glm::mat4> : public UniformBase
     {
       public:
-        using Uniform::Uniform;
+        using UniformBase::UniformBase;
 
-        void load(Int32 value) noexcept
+        void load(gsl::span<glm::mat4 const> const buffer) noexcept
         {
-            glUniform1iv(location().value, 1, &value);
+            glUniformMatrix4fv(location().value, static_cast<GLsizei>(buffer.size()), false, glm::value_ptr(buffer[0]));
+        }
+    };
+
+    template <>
+    class ArrayUniform<glm::vec2> : public UniformBase
+    {
+      public:
+        using UniformBase::UniformBase;
+
+        void load(gsl::span<glm::vec2 const> const buffer) noexcept
+        {
+            glUniform2fv(location().value, static_cast<GLsizei>(buffer.size()), glm::value_ptr(buffer[0]));
+        }
+    };
+
+    template <>
+    class ArrayUniform<glm::vec3> : public UniformBase
+    {
+      public:
+        using UniformBase::UniformBase;
+
+        void load(gsl::span<glm::vec3 const> const buffer) noexcept
+        {
+            glUniform3fv(location().value, static_cast<GLsizei>(buffer.size()), glm::value_ptr(buffer[0]));
+        }
+    };
+
+    template <>
+    class ArrayUniform<glm::vec4> : public UniformBase
+    {
+      public:
+        using UniformBase::UniformBase;
+
+        void load(gsl::span<glm::vec4 const> const buffer) noexcept
+        {
+            glUniform4fv(location().value, static_cast<GLsizei>(buffer.size()), glm::value_ptr(buffer[0]));
         }
     };
 }  // namespace glpp
