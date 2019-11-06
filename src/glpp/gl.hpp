@@ -1,12 +1,6 @@
 #pragma once
 
-#include <stdexcept>
-
-#include <glad/glad.h>
-#include "glpp/buffer.hpp"
 #include "glpp/primitive_types.hpp"
-#include "glpp/scoped_bind.hpp"
-#include "glpp/traits.hpp"
 
 namespace glpp
 {
@@ -15,4 +9,6 @@ namespace glpp
     //
     // Throws glpp::InitError
     void load_gl();
+
+	void set_viewport_size(Int32 x, Int32 y, Size width, Size height) noexcept;
 }  // namespace glpp

@@ -6,6 +6,7 @@
 
 #include <gsl/gsl_util>
 #include "glpp/error.hpp"
+#include "glpp/gl.hpp"
 #include "glpp/glfw/error.hpp"
 
 namespace
@@ -123,7 +124,8 @@ namespace glpp::glfw
     Window::Window(
         Glfw& glfw,
         WindowMode const window_mode,
-        std::string const& title)
+        std::string const& title,
+        FramebufferAutomaticResize const framebuffer_resize)
       : glfw_window_{
           checked_api_invoke(
               &glfwCreateWindow,
@@ -185,6 +187,14 @@ namespace glpp::glfw
         if (!glfw_window_)
         {
             throw InitError{"Creating window failed"};
+        }
+
+        if (framebuffer_resize == FramebufferAutomaticResize::enabled)
+        {
+            framebuffer_size_gl_viewport_conn_
+                = on_framebuffer_size([](auto const event) {
+                      set_viewport_size(0, 0, event.width, event.height);
+                  });
         }
 
         checked_api_invoke(
@@ -295,7 +305,7 @@ namespace glpp::glfw
     auto Window::api_event_context() noexcept -> ApiEventContext&
     {
         return api_event_context_;
-	}
+    }
 
     void Window::Deleter::operator()(GLFWwindow* glfw_window) const noexcept
     {

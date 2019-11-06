@@ -26,6 +26,12 @@ namespace glpp::glfw
         int height;
     };
 
+    enum class FramebufferAutomaticResize
+    {
+        enabled,
+        disabled,
+    };
+
     class Window
     {
       public:
@@ -33,13 +39,15 @@ namespace glpp::glfw
         Window(
             Glfw& glfw,
             WindowMode window_mode,
-            std::string const& title);
+            std::string const& title,
+            FramebufferAutomaticResize framebuffer_resize
+            = FramebufferAutomaticResize::enabled);
 
-		Window(Window const&) = delete;
+        Window(Window const&) = delete;
         Window(Window&&) = delete;
-        
-		auto operator=(Window const&) -> Window& = delete;
-		auto operator=(Window&&) -> Window& = delete;
+
+        auto operator=(Window const&) -> Window& = delete;
+        auto operator=(Window &&) -> Window& = delete;
 
         // Throws glpp::glfw::GlfwError
         [[nodiscard]] auto is_open() const -> bool;
@@ -80,7 +88,7 @@ namespace glpp::glfw
 
         [[nodiscard]] auto api_ptr() noexcept -> GLFWwindow*;
 
-		[[nodiscard]] auto api_event_context() noexcept -> ApiEventContext&;
+        [[nodiscard]] auto api_event_context() noexcept -> ApiEventContext&;
 
       private:
         struct Deleter
@@ -104,5 +112,6 @@ namespace glpp::glfw
         boost::signals2::scoped_connection api_drop_cb_conn_;
         boost::signals2::scoped_connection api_scroll_cb_conn_;
         boost::signals2::scoped_connection api_framebuffer_size_cb_conn_;
+        boost::signals2::scoped_connection framebuffer_size_gl_viewport_conn_;
     };
 }  // namespace glpp::glfw

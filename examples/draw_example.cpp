@@ -87,10 +87,18 @@ auto main() noexcept -> int
         // Bind the vertex array object for drawing
         auto vao_binding = glpp::ScopedBind{vertex_array};
 
-        // Draw the scene once and display it
-        glpp::clear_color({0.0f, 0.0f, 0.0f, 1.0f});
-        glpp::draw(glpp::DrawPrimitive::triangles, 3);
-        window.swap_buffers();
+        auto const draw_scene = [&]() {
+            glpp::clear_color({0.0f, 0.0f, 0.0f, 1.0f});
+            glpp::draw(glpp::DrawPrimitive::triangles, 3);
+            window.swap_buffers();
+        };
+
+		draw_scene();
+        
+		auto const redraw_on_resize_conn
+            = window.on_framebuffer_size([&]([[maybe_unused]] auto const event) {
+                  draw_scene();
+              });
 
         while (window.is_open())
         {
