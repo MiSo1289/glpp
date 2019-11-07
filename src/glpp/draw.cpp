@@ -8,12 +8,6 @@ namespace glpp
         glClear(GL_COLOR_BUFFER_BIT);
     }
 
-    void clear_depth(Float32 const depth) noexcept
-    {
-        glClearDepthf(depth);
-        glClear(GL_DEPTH_BUFFER_BIT);
-    }
-
     void clear_stencil(Int32 const stencil) noexcept
     {
         glClearStencil(stencil);

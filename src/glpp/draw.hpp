@@ -9,8 +9,6 @@ namespace glpp
 {
     void clear_color(glm::vec4 color) noexcept;
 
-    void clear_depth(Float32 depth) noexcept;
-
     void clear_stencil(Int32 stencil) noexcept;
 
     enum class DrawPrimitive : Enum

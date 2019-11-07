@@ -26,6 +26,7 @@ target_sources(
 	PUBLIC
 		bit_enum.hpp
 		buffer.hpp
+		depth.hpp
 		draw.hpp
 		error.hpp
 		framebuffer.hpp
@@ -42,6 +43,7 @@ target_sources(
 	PRIVATE
 		bit_enum.cpp
 		buffer.cpp
+		depth.cpp
 		draw.cpp
 		error.cpp
 		framebuffer.cpp
