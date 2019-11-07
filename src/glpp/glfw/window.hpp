@@ -4,6 +4,7 @@
 #include <functional>
 #include <memory>
 #include <string>
+#include <utility>
 
 #include <boost/signals2.hpp>
 #include "glpp/error.hpp"
@@ -64,6 +65,8 @@ namespace glpp::glfw
         //
         // Throws glpp::glfw::GlfwError
         void swap_buffers();
+
+        [[nodiscard]] auto framebuffer_size() const -> std::pair<int, int>;
 
         [[nodiscard]] auto on_cursor_pos(std::function<void(CursorPosEvent const&)> cb)
             -> boost::signals2::connection;

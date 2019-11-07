@@ -255,6 +255,19 @@ namespace glpp::glfw
         checked_api_invoke(&glfwSwapBuffers, glfw_window_.get());
     }
 
+    auto Window::framebuffer_size() const -> std::pair<int, int>
+    {
+        auto width = int{};
+        auto height = int{};
+        checked_api_invoke(
+            &glfwGetFramebufferSize,
+            glfw_window_.get(),
+            &width,
+            &height);
+
+        return {width, height};
+    }
+
     auto Window::on_cursor_pos(std::function<void(CursorPosEvent const&)> cb)
         -> boost::signals2::connection
     {
