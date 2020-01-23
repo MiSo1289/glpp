@@ -2,6 +2,11 @@
 
 #include "glpp/error.hpp"
 
+namespace
+{
+    thread_local glpp::ViewportSize viewport_size = {};
+}
+
 namespace glpp
 {
     void load_gl()
@@ -12,8 +17,14 @@ namespace glpp
         }
     }
 
-    void set_viewport_size(Int32 x, Int32 y, Size width, Size height) noexcept
+    void set_viewport_size(ViewportSize const size) noexcept
     {
-        glViewport(x, y, width, height);
-	}
+        viewport_size = size;
+        glViewport(size.x, size.y, size.width, size.height);
+    }
+
+    auto get_viewport_size() noexcept -> ViewportSize
+    {
+        return viewport_size;
+    }
 }  // namespace glpp
