@@ -8,6 +8,7 @@
 
 #include <magic_enum.hpp>
 #include "glpp/config/error.hpp"
+#include "glpp/load_shader.hpp"
 
 namespace magic_enum
 {
@@ -181,16 +182,15 @@ namespace glpp::config
         std::vector<std::filesystem::path> include_directories)
         -> Shader
     {
-        return Shader{
+        return load_shader(
             config.shader_type,
             version,
             config.sources,
             include_directories,
-            definitions,
-        };
+            definitions);
     }
 
-    [[nodiscard]] auto make_shader_program(ShaderProgramConfig const& config) -> ShaderProgram
+    auto make_shader_program(ShaderProgramConfig const& config) -> ShaderProgram
     {
         auto shaders = std::vector<Shader>{};
 

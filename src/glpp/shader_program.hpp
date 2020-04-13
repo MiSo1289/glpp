@@ -36,7 +36,7 @@ namespace glpp
             glUseProgram(id());
         }
 
-        void unbind() const noexcept
+        static void unbind() noexcept
         {
             glUseProgram(nullid);
         }

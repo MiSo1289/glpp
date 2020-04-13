@@ -1,6 +1,5 @@
 #pragma once
 
-#include <filesystem>
 #include <string>
 
 #include <glad/glad.h>
@@ -55,23 +54,21 @@ namespace glpp
     class Shader
     {
       public:
-        // Compiles a shader from sources.
-        // Sources can use non-standard #include "" directive;
-        // includes are resolved from the include directories.
-        // Nothing can appear inside a source file before #include
-        // directives.
-		// Multiple includes of the same file are ignored.
-        // Sources should not declare GLSL version, instead the version
-        // is passed as parameter to this function.
+        // Compile a shader from loaded source fragments,
+        // without include resolution / macro substitution.
         //
-        // Throws glpp::Error, glpp::ShaderCompilationError,
-		// std::filesystem::filesystem_error
+        // Throws glpp::Error, glpp::ShaderCompilationError
         Shader(
             ShaderType type,
-            GlslVersion version,
-            gsl::span<std::filesystem::path const> sources,
-            gsl::span<std::filesystem::path const> include_directories = {},
-            gsl::span<MacroDefinition const> definitions = {});
+            gsl::span<std::string const> source_fragments);
+
+        // Compile a shader from a single source fragments,
+        // without include resolution / macro substitution.
+        //
+        // Throws glpp::Error, glpp::ShaderCompilationError
+        Shader(
+            ShaderType type,
+            std::string const& source);
 
         [[nodiscard]] auto id() const noexcept -> Id { return id_.get(); }
 

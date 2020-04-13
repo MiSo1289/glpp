@@ -15,7 +15,7 @@ namespace glpp
         glDepthMask(access_ == DepthBufferAccess::read_write);
     }
 
-    void DepthMode::unbind() const noexcept
+    void DepthMode::unbind() noexcept
     {
         glDepthMask(true);
         glDepthFunc(static_cast<Enum>(DepthPredicate::less));

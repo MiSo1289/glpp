@@ -41,6 +41,11 @@ namespace glpp
     };
 
     template <>
+    struct PrimitiveTypeTraits<Int64>
+    {
+    };
+
+    template <>
     struct PrimitiveTypeTraits<UInt8>
     {
         static constexpr Enum enumerator = GL_UNSIGNED_BYTE;
@@ -56,6 +61,11 @@ namespace glpp
     struct PrimitiveTypeTraits<UInt32>
     {
         static constexpr Enum enumerator = GL_UNSIGNED_INT;
+    };
+
+    template <>
+    struct PrimitiveTypeTraits<UInt64>
+    {
     };
 
     template <typename PrimitiveType>

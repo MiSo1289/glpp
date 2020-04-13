@@ -15,6 +15,8 @@ namespace glpp::glfw
         }
         instance = this;
 
+        install_error_handler();
+
         if (!checked_api_invoke(&glfwInit))
         {
             throw InitError{"Failed to init GLFW"};
@@ -24,7 +26,7 @@ namespace glpp::glfw
     Glfw::~Glfw() noexcept
     {
         unchecked_api_invoke(&glfwTerminate);
-        unchecked_api_invoke(&glfwSetErrorCallback, nullptr);
+        uninstall_error_handler();
 
 		instance = nullptr;
 	}

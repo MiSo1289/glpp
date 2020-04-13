@@ -33,7 +33,7 @@ namespace glpp
             glBindBuffer(static_cast<Enum>(type), id_);
         }
 
-        void unbind() const noexcept
+        static void unbind() noexcept
         {
             glBindBuffer(static_cast<Enum>(type), nullid);
         }
@@ -73,9 +73,9 @@ namespace glpp
             view().bind();
         }
 
-        void unbind() const noexcept
+        static void unbind() noexcept
         {
-            view().unbind();
+            BufferView<T, type>::unbind();
         }
 
         [[nodiscard]] auto size() const noexcept -> std::ptrdiff_t { return size_; }

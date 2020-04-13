@@ -1,11 +1,8 @@
 #include "glpp/gl.hpp"
 
-#include "glpp/error.hpp"
+#include <array>
 
-namespace
-{
-    thread_local glpp::ViewportSize viewport_size = {};
-}
+#include "glpp/error.hpp"
 
 namespace glpp
 {
@@ -19,12 +16,28 @@ namespace glpp
 
     void set_viewport_size(ViewportSize const size) noexcept
     {
-        viewport_size = size;
         glViewport(size.x, size.y, size.width, size.height);
+    }
+
+    void set_viewport_size(
+        Int32 const x,
+        Int32 const y,
+        Size const width,
+        Size const height) noexcept
+    {
+        set_viewport_size(ViewportSize{x, y, width, height});
     }
 
     auto get_viewport_size() noexcept -> ViewportSize
     {
-        return viewport_size;
+        auto values = std::array<Int32, 4>{};
+        glGetIntegerv(GL_VIEWPORT, values.data());
+        
+        return {
+            values[0],
+            values[1],
+            values[2],
+            values[3],
+        };
     }
 }  // namespace glpp

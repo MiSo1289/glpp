@@ -36,6 +36,9 @@ namespace glpp::glfw
     class Window
     {
       public:
+        // Creates a window.
+        // Initiates the opengl context and makes it current.
+        //
         // Throws glpp::glfw::GlfwError
         Window(
             Glfw& glfw,
@@ -65,6 +68,11 @@ namespace glpp::glfw
         //
         // Throws glpp::glfw::GlfwError
         void swap_buffers();
+
+        // Start drawing to this window.
+        //
+        // Throws glpp::glfw::GlfwError
+        void make_context_current();
 
         [[nodiscard]] auto framebuffer_size() const -> std::pair<int, int>;
 

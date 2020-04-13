@@ -32,29 +32,17 @@ namespace glpp
             size_ = size;
         }
 
-        void set_frag_output_textures(gsl::span<TextureAttachment const> attachments) noexcept;
+        void set_frag_output_textures(
+            gsl::span<TextureAttachment const> attachments);
 
         void set_depth_texture(Texture& texture) noexcept
         {
-            bind();
-            glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, texture.id(), 0);
+            glNamedFramebufferTexture(id(), GL_DEPTH_ATTACHMENT, texture.id(), 0);
         }
 
-        void bind() const noexcept
-        {
-            prev_viewport_size_ = get_viewport_size();
-            glpp::set_viewport_size(size_);
-            glBindFramebuffer(GL_FRAMEBUFFER, id());
-        }
+        void bind() const noexcept;
 
-        void unbind() const noexcept
-        {
-            glpp::set_viewport_size(
-                std::exchange(prev_viewport_size_, std::nullopt)
-                    .value());
-
-            glBindFramebuffer(GL_FRAMEBUFFER, nullid);
-        }
+        static void unbind() noexcept;
 
         [[nodiscard]] auto id() const noexcept -> Id { return id_.get(); }
 
@@ -69,7 +57,6 @@ namespace glpp
 
         UniqueIdArray<1, Deleter> id_;
         ViewportSize size_ = {};
-        mutable std::optional<ViewportSize> prev_viewport_size_ = std::nullopt;
     };
 
 }  // namespace glpp

@@ -197,9 +197,7 @@ namespace glpp::glfw
                   });
         }
 
-        checked_api_invoke(
-            &glfwMakeContextCurrent,
-            glfw_window_.get());
+        make_context_current();
         glfw.load_gl();
 
         checked_api_invoke(
@@ -253,6 +251,13 @@ namespace glpp::glfw
     void Window::swap_buffers()
     {
         checked_api_invoke(&glfwSwapBuffers, glfw_window_.get());
+    }
+
+    void Window::make_context_current()
+    {
+        checked_api_invoke(
+            &glfwMakeContextCurrent,
+            glfw_window_.get());
     }
 
     auto Window::framebuffer_size() const -> std::pair<int, int>

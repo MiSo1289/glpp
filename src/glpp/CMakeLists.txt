@@ -25,6 +25,7 @@ target_sources(
 	glpp
 	PUBLIC
 		bit_enum.hpp
+		blend.hpp
 		buffer.hpp
 		depth.hpp
 		draw.hpp
@@ -32,6 +33,7 @@ target_sources(
 		framebuffer.hpp
 		gl.hpp
 		id.hpp
+		load_shader.hpp
 		primitive_types.hpp
 		scoped_bind.hpp
 		shader.hpp
@@ -39,9 +41,11 @@ target_sources(
 		texture.hpp
 		traits.hpp
 		uniform.hpp
+		value_ptr.hpp
 		vertex_array.hpp
 	PRIVATE
 		bit_enum.cpp
+		blend.cpp
 		buffer.cpp
 		depth.cpp
 		draw.cpp
@@ -49,6 +53,7 @@ target_sources(
 		framebuffer.cpp
 		gl.cpp
 		id.cpp
+		load_shader.cpp
 		primitive_types.cpp
 		scoped_bind.cpp
 		shader.cpp
@@ -56,6 +61,7 @@ target_sources(
 		texture.cpp
 		traits.cpp
 		uniform.cpp
+		value_ptr.cpp
 		vertex_array.cpp
 )
 target_link_libraries(

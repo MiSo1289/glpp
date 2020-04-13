@@ -20,7 +20,7 @@ namespace glpp
 
         void bind() const noexcept { glBindVertexArray(id()); }
 
-        void unbind() const noexcept { glBindVertexArray(nullid); }
+        static void unbind() noexcept { glBindVertexArray(nullid); }
 
         template <typename T>
         void bind_attribute_buffer(

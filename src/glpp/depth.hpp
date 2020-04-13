@@ -1,8 +1,7 @@
 #pragma once
 
-#include "glpp/primitive_types.hpp"
-
 #include <glad/glad.h>
+#include "glpp/primitive_types.hpp"
 
 namespace glpp
 {
@@ -25,11 +24,11 @@ namespace glpp
         not_equal = GL_NOTEQUAL,
         greater_equal = GL_GEQUAL,
     };
-
+    
     class DepthMode
     {
       public:
-        DepthMode(
+        explicit DepthMode(
             DepthPredicate const predicate = DepthPredicate::less,
             DepthBufferAccess const access = DepthBufferAccess::read_write)
           : predicate_{predicate}
@@ -37,7 +36,7 @@ namespace glpp
 
         void bind() const noexcept;
 
-        void unbind() const noexcept;
+        static void unbind() noexcept;
 
       private:
         DepthPredicate predicate_;

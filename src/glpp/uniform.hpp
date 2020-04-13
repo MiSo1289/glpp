@@ -22,32 +22,18 @@ namespace glpp
 
     struct SamplerUnit
     {
-        UInt32 index;
+        UInt32 index = 0;
     };
 
     class TextureSamplerUniform : public UniformBase
     {
       public:
-        TextureSamplerUniform(
-            UniformLocation const location,
-            SamplerUnit const sampler_unit) noexcept
-          : UniformBase(location)
-          , sampler_unit_(sampler_unit) {}
+        using UniformBase::UniformBase;
 
-        void bind() const noexcept
+        void load(SamplerUnit const sampler_unit) const noexcept
         {
-            glUniform1i(location().value, sampler_unit_.index);
-            glActiveTexture(GL_TEXTURE0 + sampler_unit_.index);
+            glUniform1i(location().value, sampler_unit.index);
         }
-
-        void unbind() const noexcept
-        {
-            glActiveTexture(GL_TEXTURE0);
-            glUniform1i(location().value, 0);
-        }
-
-      private:
-        SamplerUnit sampler_unit_;
     };
 
     template <typename T>

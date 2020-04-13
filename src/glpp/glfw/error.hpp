@@ -31,7 +31,7 @@ namespace glpp::glfw
           : Error{msg}
           , error_code_{error_code} {}
 
-        [[nodiscard]] auto error_code() -> ErrorCode
+        [[nodiscard]] auto error_code() const noexcept -> ErrorCode
         {
             return error_code_;
         }

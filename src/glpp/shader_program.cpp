@@ -58,7 +58,7 @@ namespace glpp
 
         if (!success)
         {
-            auto log = std::vector<char>(static_cast<std::size_t>(log_len + 1));
+            auto log = std::vector<char>(static_cast<std::size_t>(log_len) + 1);
             glGetProgramInfoLog(id(), log_len, nullptr, log.data());
             throw ShaderCompilationError{log.data()};
         }
