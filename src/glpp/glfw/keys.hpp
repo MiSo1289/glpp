@@ -1,9 +1,9 @@
 #pragma once
 
 #include <cstdint>
+#include <iosfwd>
 #include <optional>
 #include <string_view>
-#include <iosfwd>
 
 #include "glpp/bit_enum.hpp"
 #include "glpp/glfw/glfw_api.hpp"
@@ -18,12 +18,12 @@ namespace glpp::glfw
     };
 
     [[nodiscard]] auto to_string(KeyAction action) noexcept
-		-> std::string_view;
+        -> std::string_view;
 
-	[[nodiscard]] auto key_action_from_string(std::string_view string) noexcept
+    [[nodiscard]] auto key_action_from_string(std::string_view string) noexcept
         -> std::optional<KeyAction>;
 
-	auto operator<<(std::ostream& out, KeyAction action) -> std::ostream&;
+    auto operator<<(std::ostream& out, KeyAction action) -> std::ostream&;
 
     enum class KeyMod : std::uint8_t
     {
@@ -39,8 +39,8 @@ namespace glpp::glfw
     GLPP_MAKE_BIT_ENUM(KeyMod)
 
     auto operator<<(std::ostream& out, KeyMod mod) -> std::ostream&;
-    
-	enum class KeyCode
+
+    enum class KeyCode
     {
         unknown = GLFW_KEY_UNKNOWN,
         space = GLFW_KEY_SPACE,
@@ -170,8 +170,8 @@ namespace glpp::glfw
 
     [[nodiscard]] auto key_code_from_string(std::string_view string) noexcept
         -> std::optional<KeyCode>;
-    
-	auto operator<<(std::ostream& out, KeyCode key) -> std::ostream&;
+
+    auto operator<<(std::ostream& out, KeyCode key) -> std::ostream&;
 
     enum class MouseButton
     {
@@ -190,6 +190,6 @@ namespace glpp::glfw
 
     [[nodiscard]] auto mouse_button_from_string(std::string_view string) noexcept
         -> std::optional<MouseButton>;
-    
-	auto operator<<(std::ostream& out, MouseButton button) -> std::ostream&;
+
+    auto operator<<(std::ostream& out, MouseButton button) -> std::ostream&;
 }  // namespace glpp::glfw

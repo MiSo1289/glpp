@@ -1,8 +1,3 @@
-find_package(OpenGL REQUIRED)
-find_package(fmt CONFIG REQUIRED)
-find_package(glad CONFIG REQUIRED)
-find_package(glm CONFIG REQUIRED)
-
 add_library(glpp)
 add_library(glpp::glpp ALIAS glpp)
 
@@ -64,14 +59,36 @@ target_sources(
 		value_ptr.cpp
 		vertex_array.cpp
 )
+
+find_package(fmt REQUIRED)
+find_package(glad REQUIRED)
+find_package(glm REQUIRED)
+find_package(OpenGL REQUIRED)
 target_link_libraries(
-	glpp 
-	PUBLIC 
+	glpp
+	PUBLIC
 		OpenGL::GL
 		fmt::fmt
 		glad::glad
-		glm
 )
+
+if (USING_CONAN)
+	find_package(magic_enum REQUIRED)
+	find_package(Microsoft.GSL REQUIRED)
+	target_link_libraries(
+		glpp
+		PUBLIC
+			glm::glm
+			magic_enum::magic_enum
+			Microsoft.GSL::Microsoft.GSL
+	)
+else()
+	target_link_libraries(
+		glpp
+			PUBLIC
+			glm
+	)
+endif()
 
 option(BUILD_CONFIG "Build the glpp_config library" ON)
 if (BUILD_CONFIG)
@@ -81,4 +98,9 @@ endif()
 option(BUILD_GLFW "Build the glpp_glfw library" ON)
 if (BUILD_GLFW)
 	add_subdirectory(glfw)
+
+	option(BUILD_IMGUI "Build the glpp_imgui library" ON)
+	if (BUILD_IMGUI)
+		add_subdirectory(imgui)
+	endif()
 endif()

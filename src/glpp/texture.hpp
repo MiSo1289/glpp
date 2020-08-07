@@ -109,9 +109,9 @@ namespace glpp
             compressed_rgb_bptc_signed_float = GL_COMPRESSED_RGB_BPTC_SIGNED_FLOAT,
             compressed_rgb_bptc_unsigned_float = GL_COMPRESSED_RGB_BPTC_UNSIGNED_FLOAT,
         };
-        
+
         using InternalFormat = std::variant<
-            BasicFormat, 
+            BasicFormat,
             SizedInternalFormat,
             CompressedInternalFormat>;
 
@@ -178,20 +178,44 @@ namespace glpp
         Texture() noexcept = default;
 
         // Sets internal format to data.format.
+        explicit Texture(Data const data) noexcept
+          : Texture{
+              data,
+              Filter{},
+              WrapBehaviour{},
+              SwizzleMask{},
+          }
+        {
+        }
+
+        Texture(
+            Data const data,
+            InternalFormat const internal_format) noexcept
+          : Texture{
+              data,
+              internal_format,
+              Filter{},
+              WrapBehaviour{},
+              SwizzleMask{},
+          }
+        {
+        }
+
+        // Sets internal format to data.format.
         // If filter.min is a mipmap filter, also calls generate_mipmap().
-        explicit Texture(
+        Texture(
             Data data,
-            Filter filter = {},
-            WrapBehaviour wrap_behaviour = {},
-            SwizzleMask swizzle = {}) noexcept;
+            Filter filter,
+            WrapBehaviour wrap_behaviour,
+            SwizzleMask swizzle) noexcept;
 
         // If filter.min is a mipmap filter, also calls generate_mipmap().
         Texture(
             Data data,
             InternalFormat internal_format,
-            Filter filter = {},
-            WrapBehaviour wrap_behaviour = {},
-            SwizzleMask swizzle = {}) noexcept;
+            Filter filter,
+            WrapBehaviour wrap_behaviour,
+            SwizzleMask swizzle) noexcept;
 
         // Sets internal format to data.format.
         void load(
@@ -205,9 +229,9 @@ namespace glpp
 
         // Load must be called first to allocate a big enough texture.
         void update(
-            Data data, 
+            Data data,
             Int32 x_offset = 0,
-            Int32 y_offset = 0, 
+            Int32 y_offset = 0,
             Int32 level = 0) noexcept;
 
         void set_filter(Filter filter) noexcept;
@@ -254,7 +278,7 @@ namespace glpp
             Int32 level) noexcept;
 
         static void do_generate_mipmap() noexcept;
-        
+
         static void do_set_filter(Filter filter) noexcept;
 
         static void do_set_wrap_behaviour(WrapBehaviour wrap_behaviour) noexcept;

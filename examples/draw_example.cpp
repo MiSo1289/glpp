@@ -93,9 +93,9 @@ auto main() noexcept -> int
             window.swap_buffers();
         };
 
-		draw_scene();
-        
-		auto const redraw_on_resize_conn
+        draw_scene();
+
+        auto const redraw_on_resize_conn
             = window.on_framebuffer_size([&]([[maybe_unused]] auto const event) {
                   draw_scene();
               });

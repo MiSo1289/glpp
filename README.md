@@ -1,10 +1,18 @@
 # glpp
 
-OpenGL C++ wrapper
+C++ wrapper library for OpenGL and GLFW, with ImGui integration support. 
 
 ## Dependencies
 
-The following VCPKG packages are required to build this library:
+The Conan and Vcpkg package managers are supported for installing dependencies.
+
+### Using Conan
+
+Simply create the project in your cache, conan will take care of the rest.
+
+### Using Vcpkg
+
+The following packages must be installed:
 
 * fmt
 * glad
@@ -16,6 +24,7 @@ The following VCPKG packages are required to build this library:
 * With BUILD_GLFW:
 	* boost-signals2
 	* glfw3
-	* spdlog
+* With BUILD_IMGUI:
+	* imgui\[core,glfw-binding,opengl3-glad-binding\]
 * With BUILD_EXAMPLES:
 	* clara

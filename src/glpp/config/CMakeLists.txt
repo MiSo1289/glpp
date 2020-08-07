@@ -1,5 +1,3 @@
-find_package(nlohmann_json CONFIG REQUIRED)
-
 add_library(glpp_config)
 add_library(glpp::glpp_config ALIAS glpp_config)
 
@@ -22,6 +20,8 @@ target_sources(
 		config.cpp
 		error.cpp
 )
+
+find_package(nlohmann_json REQUIRED)
 target_link_libraries(
 	glpp_config 
 	PUBLIC 

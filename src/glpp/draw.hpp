@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 #include "glpp/buffer.hpp"
 #include "glpp/primitive_types.hpp"
+#include "glpp/scoped_bind.hpp"
 
 namespace glpp
 {

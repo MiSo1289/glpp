@@ -122,6 +122,7 @@ auto main(int const argc, char const* const* const argv) noexcept -> int
 
             std::this_thread::sleep_for(10ms);
             window.poll_events();
+            window.swap_buffers();
         }
     }
     catch (std::exception const& error)

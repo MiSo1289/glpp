@@ -1,5 +1,7 @@
 #include "glpp/glfw/keys.hpp"
 
+#include <iostream>
+
 #include <magic_enum.hpp>
 
 namespace magic_enum

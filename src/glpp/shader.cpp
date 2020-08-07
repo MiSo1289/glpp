@@ -2,6 +2,8 @@
 
 #include <vector>
 
+#include <gsl/gsl_util>
+
 namespace glpp
 {
     Shader::Shader(

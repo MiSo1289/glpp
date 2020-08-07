@@ -27,7 +27,7 @@ namespace glpp
         Framebuffer() noexcept
           : id_{glGenFramebuffers} {}
 
-        void set_viewport_size(ViewportSize const size)
+        void set_viewport_size(ViewportSize const size) noexcept
         {
             size_ = size;
         }

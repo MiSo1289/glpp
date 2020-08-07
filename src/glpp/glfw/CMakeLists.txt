@@ -1,6 +1,3 @@
-find_package(glfw3 CONFIG REQUIRED)
-find_package(spdlog CONFIG REQUIRED)
-
 add_library(glpp_glfw)
 add_library(glpp::glpp_glfw ALIAS glpp_glfw)
 
@@ -31,11 +28,27 @@ target_sources(
 		keys.cpp
 		window.cpp
 )
+
 target_link_libraries(
-	glpp_glfw 
-	PUBLIC 
-		glad::glad
-		glfw
-		spdlog::spdlog
+	glpp_glfw
+	PUBLIC
 		glpp::glpp
 )
+
+if (USING_CONAN)
+	find_package(glfw REQUIRED)
+	find_package(Boost REQUIRED)
+	target_link_libraries(
+		glpp_glfw
+		PUBLIC
+			Boost::Boost
+			glfw::glfw
+	)
+else()
+	find_package(glfw3 REQUIRED)
+	target_link_libraries(
+		glpp_glfw
+		PUBLIC
+			glfw3
+	)
+endif()
