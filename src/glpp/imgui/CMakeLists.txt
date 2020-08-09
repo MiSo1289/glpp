@@ -11,6 +11,12 @@ target_include_directories(
 	PUBLIC 
 		"${PROJECT_SOURCE_DIR}/src"
 )
+set_target_properties(
+	glpp_imgui
+	PROPERTIES
+		VERSION "${CMAKE_PROJECT_VERSION}"
+		SOVERSION "${CMAKE_PROJECT_VERSION_MAJOR}"
+)
 target_sources(
 	glpp_imgui
 	PUBLIC
@@ -19,16 +25,12 @@ target_sources(
 		imgui.cpp
 )
 
-target_link_libraries(
-	glpp_imgui
-	PUBLIC
-		glpp::glpp
-)
-
 find_package(imgui REQUIRED)
 target_link_libraries(
 	glpp_imgui
 	PUBLIC
+		glpp::glpp
+		glpp::glpp_glfw
 		imgui::imgui
 )
 
@@ -40,12 +42,11 @@ if (USING_CONAN)
 		PUBLIC
 			"${PROJECT_BINARY_DIR}/bindings"
 	)
+	# fPIC not enabled automatically for object libraries due to defect in CMake
 	set_target_properties(
 			imgui_bindings
-
 			PROPERTIES
-			VERSION "${BUTTONS_VERSION}"
-			SOVERSION "${CMAKE_PROJECT_VERSION_MAJOR}"
+				POSITION_INDEPENDENT_CODE ON
 	)
 	target_sources(
 		imgui_bindings

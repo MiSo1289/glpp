@@ -16,6 +16,12 @@ target_include_directories(
 	PUBLIC 
 		"${PROJECT_SOURCE_DIR}/src"
 )
+set_target_properties(
+	glpp
+	PROPERTIES
+		VERSION "${CMAKE_PROJECT_VERSION}"
+		SOVERSION "${CMAKE_PROJECT_VERSION_MAJOR}"
+)
 target_sources(
 	glpp
 	PUBLIC
