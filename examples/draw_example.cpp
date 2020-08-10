@@ -6,16 +6,16 @@
 #include <thread>
 
 #include <glm/glm.hpp>
+#include <glpp/buffer.hpp>
+#include <glpp/config/config.hpp>
+#include <glpp/draw.hpp>
+#include <glpp/glfw/glfw.hpp>
+#include <glpp/glfw/window.hpp>
+#include <glpp/scoped_bind.hpp>
+#include <glpp/shader_program.hpp>
+#include <glpp/uniform.hpp>
+#include <glpp/vertex_array.hpp>
 #include <nlohmann/json.hpp>
-#include "glpp/buffer.hpp"
-#include "glpp/config/config.hpp"
-#include "glpp/draw.hpp"
-#include "glpp/glfw/glfw.hpp"
-#include "glpp/glfw/window.hpp"
-#include "glpp/scoped_bind.hpp"
-#include "glpp/shader_program.hpp"
-#include "glpp/uniform.hpp"
-#include "glpp/vertex_array.hpp"
 
 namespace
 {
@@ -26,6 +26,8 @@ namespace
 
 auto main() noexcept -> int
 {
+    using namespace std::chrono_literals;
+
     try
     {
         // Load the shader program config file
@@ -102,8 +104,6 @@ auto main() noexcept -> int
 
         while (window.is_open())
         {
-            using namespace std::chrono_literals;
-
             std::this_thread::sleep_for(10ms);
             window.poll_events();
         }

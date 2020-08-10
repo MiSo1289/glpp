@@ -117,6 +117,21 @@ namespace
         static_cast<glpp::glfw::ApiEventContext*>(user_ptr)
             ->trigger_framebuffer_size_event(width, height);
     }
+
+    extern "C" void glpp_glfw_content_scale_callback(
+        GLFWwindow* const window,
+        float const hor_scale,
+        float const vert_scale) noexcept
+    {
+        auto* const user_ptr = glpp::glfw::unchecked_api_invoke(
+            &glfwGetWindowUserPointer,
+            window);
+
+        assert(user_ptr != nullptr);
+
+        static_cast<glpp::glfw::ApiEventContext*>(user_ptr)
+            ->trigger_content_scale_event(hor_scale, vert_scale);
+    }
 }  // namespace
 
 namespace glpp::glfw
@@ -183,18 +198,15 @@ namespace glpp::glfw
                 framebuffer_size_signal_({width, height});
             }),
         }
+      , api_content_scale_cb_conn_{
+            api_event_context_.on_api_content_scale([this](float hor_scale, float vert_scale) {
+                content_scale_signal_({hor_scale, vert_scale});
+            }),
+        }
     {
         if (!glfw_window_)
         {
             throw InitError{"Creating window failed"};
-        }
-
-        if (framebuffer_resize == FramebufferAutomaticResize::enabled)
-        {
-            framebuffer_size_gl_viewport_conn_
-                = on_framebuffer_size([](auto const event) {
-                      set_viewport_size(0, 0, event.width, event.height);
-                  });
         }
 
         make_context_current();
@@ -233,6 +245,21 @@ namespace glpp::glfw
             &glfwSetFramebufferSizeCallback,
             glfw_window_.get(),
             &glpp_glfw_framebuffer_size_callback);
+        checked_api_invoke(
+            &glfwSetWindowContentScaleCallback,
+            glfw_window_.get(),
+            &glpp_glfw_content_scale_callback);
+
+        if (framebuffer_resize == FramebufferAutomaticResize::enabled)
+        {
+            framebuffer_size_gl_viewport_conn_
+                = on_framebuffer_size([](auto const event) {
+                      set_viewport_size(0, 0, event.width, event.height);
+                  });
+
+            auto const [width, height] = framebuffer_size();
+            set_viewport_size(0, 0, width, height);
+        }
     }
 
     auto Window::is_open() const -> bool
@@ -260,7 +287,7 @@ namespace glpp::glfw
             glfw_window_.get());
     }
 
-    auto Window::framebuffer_size() const -> std::pair<int, int>
+    auto Window::framebuffer_size() const -> std::array<int, 2>
     {
         auto width = int{};
         auto height = int{};
@@ -271,6 +298,19 @@ namespace glpp::glfw
             &height);
 
         return {width, height};
+    }
+
+    auto Window::content_scale() const -> std::array<float, 2>
+    {
+        auto hor_scale = float{};
+        auto vert_scale = float{};
+        checked_api_invoke(
+            &glfwGetWindowContentScale,
+            glfw_window_.get(),
+            &hor_scale,
+            &vert_scale);
+
+        return {hor_scale, vert_scale};
     }
 
     auto Window::on_cursor_pos(std::function<void(CursorPosEvent const&)> cb)

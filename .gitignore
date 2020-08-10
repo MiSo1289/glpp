@@ -1,7 +1,12 @@
-out
+# IDE files
+.idea
+.vs
+.vscode
+CMakeSettings.json
+
+# Common build folder names
 build
 build-*
 cmake-build-*
-.vs
-.idea
-CMakeSettings.json
+out
+target

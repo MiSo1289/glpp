@@ -6,11 +6,13 @@
 #include <clara.hpp>
 #include <fmt/format.h>
 #include <fmt/ostream.h>
-#include "glpp/glfw/glfw.hpp"
-#include "glpp/glfw/window.hpp"
+#include <glpp/glfw/glfw.hpp>
+#include <glpp/glfw/window.hpp>
 
 auto main(int const argc, char const* const* const argv) noexcept -> int
 {
+    using namespace std::chrono_literals;
+
     try
     {
         auto show_help = false;
@@ -118,8 +120,6 @@ auto main(int const argc, char const* const* const argv) noexcept -> int
 
         while (window.is_open())
         {
-            using namespace std::chrono_literals;
-
             std::this_thread::sleep_for(10ms);
             window.poll_events();
             window.swap_buffers();

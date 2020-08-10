@@ -13,16 +13,16 @@ namespace glpp::imgui
         ::ImGui_ImplGlfw_InitForOpenGL(window.api_ptr(), false);
         ::ImGui_ImplOpenGL3_Init();
 
-        mouse_button_cb_conn_ = window.api_event_context().on_api_mouse_button([this](auto const... args) {
+        api_mouse_button_cb_conn_ = window.api_event_context().on_api_mouse_button([this](auto const... args) {
             ::ImGui_ImplGlfw_MouseButtonCallback(window_.api_ptr(), args...);
         });
-        scroll_cb_conn_ = window.api_event_context().on_api_scroll([this](auto const... args) {
+        api_scroll_cb_conn_ = window.api_event_context().on_api_scroll([this](auto const... args) {
             ::ImGui_ImplGlfw_ScrollCallback(window_.api_ptr(), args...);
         });
-        key_cb_conn_ = window.api_event_context().on_api_key([this](auto const... args) {
+        api_key_cb_conn_ = window.api_event_context().on_api_key([this](auto const... args) {
             ::ImGui_ImplGlfw_KeyCallback(window_.api_ptr(), args...);
         });
-        char_cb_conn_ = window.api_event_context().on_api_char([this](auto const... args) {
+        api_char_cb_conn_ = window.api_event_context().on_api_char([this](auto const... args) {
             ::ImGui_ImplGlfw_CharCallback(window_.api_ptr(), args...);
         });
     }

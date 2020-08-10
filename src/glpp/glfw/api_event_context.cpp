@@ -64,6 +64,12 @@ namespace glpp::glfw
         return api_framebuffer_size_signal_.connect(std::move(cb));
     }
 
+    auto ApiEventContext::on_api_content_scale(std::function<void(float, float)> cb)
+        -> boost::signals2::connection
+    {
+        return api_content_scale_signal_.connect(std::move(cb));
+    }
+
     void ApiEventContext::rethrow_any_error()
     {
         if (error_)
@@ -105,5 +111,10 @@ namespace glpp::glfw
     void ApiEventContext::trigger_framebuffer_size_event(int width, int height) noexcept
     {
         try_trigger_signal(api_framebuffer_size_signal_, width, height);
+    }
+
+    void ApiEventContext::trigger_content_scale_event(float hor_scale, float vert_scale) noexcept
+    {
+        try_trigger_signal(api_content_scale_signal_, hor_scale, vert_scale);
     }
 }  // namespace glpp::glfw

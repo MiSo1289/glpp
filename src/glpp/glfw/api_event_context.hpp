@@ -31,6 +31,9 @@ namespace glpp::glfw
         [[nodiscard]] auto on_api_framebuffer_size(std::function<void(int, int)> cb)
             -> boost::signals2::connection;
 
+        [[nodiscard]] auto on_api_content_scale(std::function<void(float, float)> cb)
+        -> boost::signals2::connection;
+
         void rethrow_any_error();
 
         void trigger_cursor_pos_event(double x, double y) noexcept;
@@ -47,15 +50,18 @@ namespace glpp::glfw
 
         void trigger_framebuffer_size_event(int width, int height) noexcept;
 
+        void trigger_content_scale_event(float hor_scale, float vert_scale) noexcept;
+
       private:
         std::exception_ptr error_ = nullptr;
-		boost::signals2::signal<void(double, double)> api_cursor_pos_signal_;
+        boost::signals2::signal<void(double, double)> api_cursor_pos_signal_;
         boost::signals2::signal<void(int, int, int)> api_mouse_button_signal_;
         boost::signals2::signal<void(int, int, int, int)> api_key_signal_;
         boost::signals2::signal<void(unsigned)> api_char_signal_;
         boost::signals2::signal<void(int, char const**)> api_drop_signal_;
         boost::signals2::signal<void(double, double)> api_scroll_signal_;
         boost::signals2::signal<void(int, int)> api_framebuffer_size_signal_;
+        boost::signals2::signal<void(float, float)> api_content_scale_signal_;
 
         template <typename Signal, typename... Args>
         void try_trigger_signal(Signal& signal, Args... args) noexcept;

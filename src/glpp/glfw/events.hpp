@@ -48,5 +48,11 @@ namespace glpp::glfw
     {
         int width;
         int height;
-	};
+    };
+
+    struct ContentScaleEvent
+    {
+        float hor_scale;
+        float vert_scale;
+    };
 }  // namespace glpp::glfw
