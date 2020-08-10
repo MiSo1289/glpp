@@ -92,4 +92,13 @@ class Glpp(ConanFile):
         del self.info.options.examples
 
     def package_info(self):
-        self.cpp_info.libs = tools.collect_libs(self)
+        if self.options.imgui:
+            self.cpp_info.libs.append("glpp_imgui")
+
+        if self.options.glfw:
+            self.cpp_info.libs.append("glpp_glfw")
+
+        if self.options.config:
+            self.cpp_info.libs.append("glpp_config")
+
+        self.cpp_info.libs.append("glpp")
