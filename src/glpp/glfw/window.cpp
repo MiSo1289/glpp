@@ -363,6 +363,12 @@ namespace glpp::glfw
         return framebuffer_size_signal_.connect(std::move(cb));
     }
 
+    auto Window::on_content_scale(std::function<void(ContentScaleEvent const&)> cb)
+        -> boost::signals2::connection
+    {
+        return content_scale_signal_.connect(std::move(cb));
+    }
+
     auto Window::api_ptr() noexcept -> GLFWwindow*
     {
         return glfw_window_.get();
