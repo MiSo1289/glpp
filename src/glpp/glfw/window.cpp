@@ -262,11 +262,19 @@ namespace glpp::glfw
         }
     }
 
-    auto Window::is_open() const -> bool
+    auto Window::should_close() const -> bool
     {
-        return !checked_api_invoke(
+        return checked_api_invoke(
             &glfwWindowShouldClose,
             glfw_window_.get());
+    }
+
+    void Window::set_should_close(bool const flag)
+    {
+        return checked_api_invoke(
+            &glfwSetWindowShouldClose,
+            glfw_window_.get(),
+            flag);
     }
 
     void Window::poll_events()

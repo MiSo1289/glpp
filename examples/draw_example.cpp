@@ -102,7 +102,7 @@ auto main() noexcept -> int
                   draw_scene();
               });
 
-        while (window.is_open())
+        while (!window.should_close())
         {
             std::this_thread::sleep_for(10ms);
             window.poll_events();

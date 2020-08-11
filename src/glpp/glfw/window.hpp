@@ -54,7 +54,10 @@ namespace glpp::glfw
         auto operator=(Window&&) -> Window& = delete;
 
         // Throws glpp::glfw::GlfwError
-        [[nodiscard]] auto is_open() const -> bool;
+        [[nodiscard]] auto should_close() const -> bool;
+
+        // Throws glpp::glfw::GlfwError
+        void set_should_close(bool flag);
 
         // Poll events and pass them to user event handlers.
         // If a handler throws, no other handlers will get called

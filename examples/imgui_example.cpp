@@ -35,7 +35,7 @@ auto main() noexcept -> int
         cfg.SizePixels = 13 * SCALE;
         ImGui::GetIO().Fonts->AddFontDefault(&cfg)->DisplayOffset.y = SCALE;
 
-        while (window.is_open())
+        while (!window.should_close())
         {
             glpp::clear_color({0.0f, 0.0f, 0.0f, 1.0f});
             window.poll_events();
