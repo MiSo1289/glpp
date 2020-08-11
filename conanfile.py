@@ -4,6 +4,10 @@ from conans import CMake, CMakeToolchain, ConanFile, tools
 class Glpp(ConanFile):
     name = "glpp"
     version = "0.1.0"
+    description = "OpenGL/GLFW C++ wrapper with ImGui integration"
+    homepage = "https://github.com/MiSo1289/glpp"
+    url = "https://github.com/MiSo1289/glpp"
+    license = "MIT"
     revision_mode = "scm"
     settings = ("os", "compiler", "build_type", "arch")
     options = {
