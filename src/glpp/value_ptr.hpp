@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <type_traits>
 #include <variant>
 
 #include "glpp/primitive_types.hpp"
@@ -16,7 +17,10 @@ namespace glpp
 
         BasicValuePtr(std::nullptr_t) noexcept {}
 
-        BasicValuePtr(VariantPtr const value) noexcept
+        template <
+            typename T,
+            typename = std::enable_if_t<std::is_convertible_v<T*, VariantPtr>>>
+        BasicValuePtr(T* const value) noexcept
           : value_{value}
         {
         }

@@ -4,7 +4,7 @@
 
 #include <magic_enum.hpp>
 
-namespace magic_enum
+namespace magic_enum::customize
 {
     template <>
     struct enum_range<glpp::glfw::KeyCode>
@@ -12,7 +12,7 @@ namespace magic_enum
         static constexpr int min = GLFW_KEY_UNKNOWN;
         static constexpr int max = GLFW_KEY_LAST;
     };
-}  // namespace magic_enum
+}  // namespace magic_enum::customize
 
 namespace glpp::glfw
 {
@@ -37,8 +37,8 @@ namespace glpp::glfw
     {
         out << "{";
         auto sep = "";
-        
-		for (auto const value : magic_enum::enum_values<KeyMod>())
+
+        for (auto const value : magic_enum::enum_values<KeyMod>())
         {
             if ((mod & value) != KeyMod::none)
             {
@@ -46,8 +46,8 @@ namespace glpp::glfw
                 sep = ", ";
             }
         }
-        
-		return out << "}";
+
+        return out << "}";
     }
 
     auto to_string(KeyCode const key) noexcept

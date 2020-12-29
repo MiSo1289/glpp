@@ -48,6 +48,6 @@ if(USING_CONAN)
     glfw::glfw
   )
 else()
-  find_package(glfw3 REQUIRED)
-  target_link_libraries(glpp_glfw PUBLIC glfw3)
+  find_package(glfw3 CONFIG REQUIRED)
+  target_link_libraries(glpp_glfw PUBLIC glfw)
 endif()

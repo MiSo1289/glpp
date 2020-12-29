@@ -10,7 +10,7 @@
 #include "glpp/config/error.hpp"
 #include "glpp/load_shader.hpp"
 
-namespace magic_enum
+namespace magic_enum::customize
 {
     template <>
     struct enum_range<glpp::GlslVersionNumber>
@@ -18,7 +18,7 @@ namespace magic_enum
         static constexpr int min = static_cast<int>(glpp::GlslVersionNumber::glsl_110);
         static constexpr int max = static_cast<int>(glpp::GlslVersionNumber::glsl_430);
     };
-}  // namespace magic_enum
+}  // namespace magic_enum::customize
 
 namespace
 {
