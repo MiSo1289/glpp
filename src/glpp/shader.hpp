@@ -1,9 +1,9 @@
 #pragma once
 
+#include <span>
 #include <string>
 
 #include <glad/glad.h>
-#include <gsl/span>
 #include "glpp/error.hpp"
 #include "glpp/id.hpp"
 
@@ -60,7 +60,7 @@ namespace glpp
         // Throws glpp::Error, glpp::ShaderCompilationError
         Shader(
             ShaderType type,
-            gsl::span<std::string const> source_fragments);
+            std::span<std::string const> source_fragments);
 
         // Compile a shader from a single source fragments,
         // without include resolution / macro substitution.
@@ -86,7 +86,7 @@ namespace glpp
         ShaderId id_;
 
         void compile(
-            gsl::span<std::string const> sourceFragments);
+            std::span<std::string const> sourceFragments);
     };
 
 }  // namespace glpp

@@ -8,7 +8,7 @@ namespace glpp
 {
     Shader::Shader(
         ShaderType const type,
-        gsl::span<std::string const> const source_fragments)
+        std::span<std::string const> const source_fragments)
       : id_{glCreateShader(static_cast<Enum>(type))}
     {
         if (!id())
@@ -21,11 +21,11 @@ namespace glpp
     Shader::Shader(
         ShaderType const type,
         std::string const& source)
-      : Shader{type, gsl::span{&source, 1}}
+      : Shader{type, std::span{&source, 1}}
     {
     }
 
-    void Shader::compile(gsl::span<std::string const> const source_fragments)
+    void Shader::compile(std::span<std::string const> const source_fragments)
     {
         auto fragment_c_strings = std::vector<char const*>{};
         fragment_c_strings.reserve(source_fragments.size());

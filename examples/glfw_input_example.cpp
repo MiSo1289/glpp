@@ -3,7 +3,7 @@
 #include <thread>
 
 #include <boost/signals2.hpp>
-#include <clara.hpp>
+#include <lyra/lyra.hpp>
 #include <fmt/format.h>
 #include <fmt/ostream.h>
 #include <glpp/glfw/glfw.hpp>
@@ -23,19 +23,19 @@ auto main(int const argc, char const* const* const argv) noexcept -> int
         auto log_mouse_scroll_events = false;
 
         auto const cli
-            = clara::Help(show_help)
-              | clara::Opt{log_all}
+            = lyra::help(show_help)
+              | lyra::opt{log_all}
                   ["-a"]["--all"]("Log all events (equivalent to -kbms)")
-              | clara::Opt{log_key_events}
+              | lyra::opt{log_key_events}
                   ["-k"]["--keys"]("Log key events")
-              | clara::Opt{log_mouse_button_events}
+              | lyra::opt{log_mouse_button_events}
                   ["-b"]["--mouse-buttons"]("Log mouse button events")
-              | clara::Opt{log_mouse_move_events}
+              | lyra::opt{log_mouse_move_events}
                   ["-m"]["--mouse-move"]("Log mouse move events")
-              | clara::Opt{log_mouse_scroll_events}
+              | lyra::opt{log_mouse_scroll_events}
                   ["-s"]["--mouse-scroll"]("Log mouse scroll events");
 
-        if (auto const parse_result = cli.parse(clara::Args(argc, argv));
+        if (auto const parse_result = cli.parse(lyra::args(argc, argv));
             !parse_result)
         {
             std::cerr << parse_result.errorMessage() << "\n"

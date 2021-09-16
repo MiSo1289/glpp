@@ -12,7 +12,7 @@ namespace
 namespace glpp
 {
     void Framebuffer::set_frag_output_textures(
-        gsl::span<TextureAttachment const> const attachments)
+        std::span<TextureAttachment const> const attachments)
     {
         auto const binding = ScopedBind{*this};
 

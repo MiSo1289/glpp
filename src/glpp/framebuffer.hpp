@@ -2,9 +2,9 @@
 
 #include <cstddef>
 #include <optional>
+#include <span>
 
 #include <glad/glad.h>
-#include <gsl/span>
 #include "glpp/gl.hpp"
 #include "glpp/id.hpp"
 #include "glpp/primitive_types.hpp"
@@ -33,7 +33,7 @@ namespace glpp
         }
 
         void set_frag_output_textures(
-            gsl::span<TextureAttachment const> attachments);
+            std::span<TextureAttachment const> attachments);
 
         void set_depth_texture(Texture& texture) noexcept
         {

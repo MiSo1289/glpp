@@ -2,12 +2,12 @@
 
 #include <array>
 #include <cassert>
+#include <span>
 #include <utility>
 #include <vector>
 
 #include <glad/glad.h>
 #include <gsl/gsl_util>
-#include <gsl/span>
 #include "glpp/id.hpp"
 #include "glpp/traits.hpp"
 
@@ -104,7 +104,7 @@ namespace glpp
       public:
         StaticBuffer() = default;
 
-        void buffer_data(gsl::span<T const> data)
+        void buffer_data(std::span<T const> data)
         {
             this->set_size(data.size());
 
@@ -123,7 +123,7 @@ namespace glpp
       public:
         DynamicBuffer() = default;
 
-        void buffer_data(gsl::span<T const> data) noexcept
+        void buffer_data(std::span<T const> data) noexcept
         {
             this->set_size(data.size());
 
@@ -137,7 +137,7 @@ namespace glpp
             buffer_subdata(data);
         }
 
-        void buffer_subdata(gsl::span<T const> data, std::ptrdiff_t offset = 0) noexcept
+        void buffer_subdata(std::span<T const> data, std::ptrdiff_t offset = 0) noexcept
         {
             assert(offset + data.size() <= this->size());
             this->bind();

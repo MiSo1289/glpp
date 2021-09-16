@@ -3,8 +3,8 @@
 #include <filesystem>
 #include <fstream>
 #include <memory>
+#include <span>
 
-#include <gsl/span>
 #include "glpp/shader.hpp"
 
 namespace glpp
@@ -68,9 +68,9 @@ namespace glpp
     [[nodiscard]] auto load_shader(
         ShaderType type,
         GlslVersion version,
-        gsl::span<std::filesystem::path const> sources,
-        gsl::span<std::filesystem::path const> include_directories = {},
-        gsl::span<MacroDefinition const> definitions = {},
+        std::span<std::filesystem::path const> sources,
+        std::span<std::filesystem::path const> include_directories = {},
+        std::span<MacroDefinition const> definitions = {},
         ShaderFilesystem const& filesystem = DefaultShaderFilesystem{})
         -> Shader;
 }  // namespace glpp

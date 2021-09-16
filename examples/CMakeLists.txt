@@ -2,12 +2,12 @@ if(BUILD_GLFW)
   add_executable(glfw_input_example)
   target_compile_features(glfw_input_example PRIVATE cxx_std_17)
   target_sources(glfw_input_example PRIVATE glfw_input_example.cpp)
-  target_link_libraries(glfw_input_example PRIVATE glpp::glpp_glfw)
-
-  if(USING_CONAN)
-    find_package(clara REQUIRED)
-    target_link_libraries(glfw_input_example PRIVATE clara::clara)
-  endif()
+  target_link_libraries(
+    glfw_input_example
+    PRIVATE
+    CONAN_PKG::lyra
+    glpp::glpp_glfw
+  )
 
   if(BUILD_CONFIG)
     add_executable(draw_example)

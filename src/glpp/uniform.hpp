@@ -1,9 +1,10 @@
 #pragma once
 
+#include <span>
+
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <gsl/span>
 #include "glpp/shader_program.hpp"
 
 namespace glpp
@@ -55,7 +56,7 @@ namespace glpp
 
         void load(T const value) noexcept
         {
-            impl_.load(gsl::span{&value, 1});
+            impl_.load(std::span{&value, 1});
         }
 
       private:
@@ -68,7 +69,7 @@ namespace glpp
       public:
         using UniformBase::UniformBase;
 
-        void load(gsl::span<Float32 const> const buffer) noexcept
+        void load(std::span<Float32 const> const buffer) noexcept
         {
             glUniform1fv(location().value, static_cast<GLsizei>(buffer.size()), buffer.data());
         }
@@ -80,7 +81,7 @@ namespace glpp
       public:
         using UniformBase::UniformBase;
 
-        void load(gsl::span<Int32 const> const buffer) noexcept
+        void load(std::span<Int32 const> const buffer) noexcept
         {
             glUniform1iv(location().value, static_cast<GLsizei>(buffer.size()), buffer.data());
         }
@@ -92,7 +93,7 @@ namespace glpp
       public:
         using UniformBase::UniformBase;
 
-        void load(gsl::span<UInt32 const> const buffer) noexcept
+        void load(std::span<UInt32 const> const buffer) noexcept
         {
             glUniform1uiv(location().value, static_cast<GLsizei>(buffer.size()), buffer.data());
         }
@@ -104,7 +105,7 @@ namespace glpp
       public:
         using UniformBase::UniformBase;
 
-        void load(gsl::span<glm::mat2 const> const buffer) noexcept
+        void load(std::span<glm::mat2 const> const buffer) noexcept
         {
             glUniformMatrix2fv(location().value, static_cast<GLsizei>(buffer.size()), false, glm::value_ptr(buffer[0]));
         }
@@ -116,7 +117,7 @@ namespace glpp
       public:
         using UniformBase::UniformBase;
 
-        void load(gsl::span<glm::mat3 const> const buffer) noexcept
+        void load(std::span<glm::mat3 const> const buffer) noexcept
         {
             glUniformMatrix3fv(location().value, static_cast<GLsizei>(buffer.size()), false, glm::value_ptr(buffer[0]));
         }
@@ -128,7 +129,7 @@ namespace glpp
       public:
         using UniformBase::UniformBase;
 
-        void load(gsl::span<glm::mat4 const> const buffer) noexcept
+        void load(std::span<glm::mat4 const> const buffer) noexcept
         {
             glUniformMatrix4fv(location().value, static_cast<GLsizei>(buffer.size()), false, glm::value_ptr(buffer[0]));
         }
@@ -140,7 +141,7 @@ namespace glpp
       public:
         using UniformBase::UniformBase;
 
-        void load(gsl::span<glm::vec2 const> const buffer) noexcept
+        void load(std::span<glm::vec2 const> const buffer) noexcept
         {
             glUniform2fv(location().value, static_cast<GLsizei>(buffer.size()), glm::value_ptr(buffer[0]));
         }
@@ -152,7 +153,7 @@ namespace glpp
       public:
         using UniformBase::UniformBase;
 
-        void load(gsl::span<glm::vec3 const> const buffer) noexcept
+        void load(std::span<glm::vec3 const> const buffer) noexcept
         {
             glUniform3fv(location().value, static_cast<GLsizei>(buffer.size()), glm::value_ptr(buffer[0]));
         }
@@ -164,7 +165,7 @@ namespace glpp
       public:
         using UniformBase::UniformBase;
 
-        void load(gsl::span<glm::vec4 const> const buffer) noexcept
+        void load(std::span<glm::vec4 const> const buffer) noexcept
         {
             glUniform4fv(location().value, static_cast<GLsizei>(buffer.size()), glm::value_ptr(buffer[0]));
         }

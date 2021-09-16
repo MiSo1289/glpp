@@ -30,7 +30,7 @@ namespace
 
     [[nodiscard]] auto prelude_fragment(
         glpp::GlslVersion const version,
-        gsl::span<glpp::MacroDefinition const> const definitions)
+        std::span<glpp::MacroDefinition const> const definitions)
         -> std::string
     {
         auto prelude_stream = std::ostringstream{};
@@ -46,7 +46,7 @@ namespace
 
     [[nodiscard]] auto find_include(
         std::filesystem::path const& include,
-        gsl::span<std::filesystem::path const> const include_directories,
+        std::span<std::filesystem::path const> const include_directories,
         glpp::ShaderFilesystem const& filesystem)
         -> std::optional<std::filesystem::path>
     {
@@ -69,7 +69,7 @@ namespace
 
     void resolve_includes(
         std::filesystem::path const& source,
-        gsl::span<std::filesystem::path const> const include_directories,
+        std::span<std::filesystem::path const> const include_directories,
         std::vector<std::string>& source_fragments,
         std::unordered_set<std::string>& open_files,
         std::unordered_set<std::string>& resolved_files,
@@ -185,9 +185,9 @@ namespace
 
     [[nodiscard]] auto resolve_source_fragments(
         glpp::GlslVersion const version,
-        gsl::span<std::filesystem::path const> const sources,
-        gsl::span<std::filesystem::path const> const include_directories,
-        gsl::span<glpp::MacroDefinition const> const definitions,
+        std::span<std::filesystem::path const> const sources,
+        std::span<std::filesystem::path const> const include_directories,
+        std::span<glpp::MacroDefinition const> const definitions,
         glpp::ShaderFilesystem const& filesystem)
         -> std::vector<std::string>
     {
@@ -218,9 +218,9 @@ namespace glpp
     [[nodiscard]] auto load_shader(
         ShaderType const type,
         GlslVersion const version,
-        gsl::span<std::filesystem::path const> const sources,
-        gsl::span<std::filesystem::path const> const include_directories,
-        gsl::span<MacroDefinition const> const definitions,
+        std::span<std::filesystem::path const> const sources,
+        std::span<std::filesystem::path const> const include_directories,
+        std::span<MacroDefinition const> const definitions,
         ShaderFilesystem const& filesystem)
         -> Shader
     {

@@ -1,7 +1,10 @@
 cmake_minimum_required(VERSION 3.13)
-project(Glpp VERSION 0.1.0)
+project(Glpp VERSION 0.2.0)
 
-option(USING_CONAN "Set by conan during installation" OFF)
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_BINARY_DIR}")
+include(conanbuildinfo)
+conan_basic_setup(TARGETS)
+
 add_subdirectory(src/glpp)
 
 option(BUILD_EXAMPLES "Build the examples" ON)

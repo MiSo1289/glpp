@@ -1,10 +1,10 @@
 #pragma once
 
 #include <optional>
+#include <span>
 #include <string>
 
 #include <glad/glad.h>
-#include <gsl/span>
 #include "glpp/id.hpp"
 #include "glpp/primitive_types.hpp"
 #include "glpp/shader.hpp"
@@ -29,7 +29,7 @@ namespace glpp
     class ShaderProgram
     {
       public:
-        explicit ShaderProgram(gsl::span<Shader const> shaders);
+        explicit ShaderProgram(std::span<Shader const> shaders);
 
         void bind() const noexcept
         {
@@ -60,7 +60,7 @@ namespace glpp
 
         UniqueId<Deleter> id_;
 
-        void link(gsl::span<Shader const> shaders);
+        void link(std::span<Shader const> shaders);
     };
 
 }  // namespace glpp

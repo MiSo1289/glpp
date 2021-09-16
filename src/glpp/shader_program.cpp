@@ -6,7 +6,7 @@
 
 namespace glpp
 {
-    ShaderProgram::ShaderProgram(gsl::span<Shader const> shaders)
+    ShaderProgram::ShaderProgram(std::span<Shader const> shaders)
       : id_{glCreateProgram()}
     {
         link(shaders);
@@ -41,7 +41,7 @@ namespace glpp
         glDeleteProgram(id);
     }
 
-    void ShaderProgram::link(gsl::span<Shader const> shaders)
+    void ShaderProgram::link(std::span<Shader const> shaders)
     {
         for (auto const& shader : shaders)
             glAttachShader(id(), shader.id());

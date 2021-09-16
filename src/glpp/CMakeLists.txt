@@ -3,8 +3,7 @@ include(CMakeDependentOption)
 add_library(glpp)
 add_library(glpp::glpp ALIAS glpp)
 
-target_compile_features(glpp PUBLIC cxx_std_17)
-target_compile_definitions(glpp PUBLIC "NOMINMAX")
+target_compile_features(glpp PUBLIC cxx_std_20)
 target_include_directories(
   glpp
 
@@ -64,33 +63,18 @@ target_sources(
   vertex_array.cpp
 )
 
-find_package(fmt REQUIRED)
-find_package(glad REQUIRED)
-find_package(glm REQUIRED)
 find_package(OpenGL REQUIRED)
 target_link_libraries(
   glpp
 
   PUBLIC
   OpenGL::GL
-  fmt::fmt-header-only
-  glad::glad
+  CONAN_PKG::fmt
+  CONAN_PKG::glad
+  CONAN_PKG::glm
+  CONAN_PKG::magic_enum
+  CONAN_PKG::ms-gsl
 )
-
-if(USING_CONAN)
-  find_package(magic_enum REQUIRED)
-  find_package(Microsoft.GSL REQUIRED)
-  target_link_libraries(
-    glpp
-
-    PUBLIC
-    glm::glm
-    magic_enum::magic_enum
-    Microsoft.GSL::Microsoft.GSL
-  )
-else()
-  target_link_libraries(glpp PUBLIC glm)
-endif()
 
 option(BUILD_CONFIG "Build the glpp_config library" ON)
 if(BUILD_CONFIG)

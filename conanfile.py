@@ -1,10 +1,9 @@
-from conans import ConanFile, tools
-from conan.tools.cmake import CMakeToolchain, CMake
+from conans import ConanFile, CMake, tools
 
 
 class Glpp(ConanFile):
     name = "glpp"
-    version = "0.1.0"
+    version = "0.2.0"
     description = "OpenGL/GLFW C++ wrapper with ImGui integration"
     homepage = "https://github.com/MiSo1289/glpp"
     url = "https://github.com/MiSo1289/glpp"
@@ -27,7 +26,7 @@ class Glpp(ConanFile):
         "examples": True,
         "glad:gl_version": "4.5",
     }
-    generators = "cmake_find_package"
+    generators = "cmake"
     exports_sources = (
         "src/*",
         "examples/*",
@@ -53,7 +52,7 @@ class Glpp(ConanFile):
             self.requires("imgui/1.77")
 
         if self.options.examples:
-            self.requires("clara/1.1.5")
+            self.requires("lyra/1.5.1")
 
     def imports(self):
         # Collect shared libraries
@@ -64,18 +63,12 @@ class Glpp(ConanFile):
             self.copy("imgui_impl_glfw.*", dst="bindings", src="res/bindings")
             self.copy("imgui_impl_opengl3.*", dst="bindings", src="res/bindings")
 
-    def generate(self):
-        tc = CMakeToolchain(self)
-
-        tc.variables["USING_CONAN"] = True
-        tc.variables["BUILD_GLFW"] = self.options.glfw
-        tc.variables["BUILD_CONFIG"] = self.options.config
-        tc.variables["BUILD_EXAMPLES"] = self.options.examples
-
-        tc.generate()
-
     def build(self):
         cmake = CMake(self)
+
+        cmake.definitions["BUILD_GLFW"] = self.options.glfw
+        cmake.definitions["BUILD_CONFIG"] = self.options.config
+        cmake.definitions["BUILD_EXAMPLES"] = self.options.examples
 
         cmake.configure()
         cmake.build()
