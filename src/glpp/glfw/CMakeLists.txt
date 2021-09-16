@@ -38,14 +38,14 @@ target_sources(
 target_link_libraries(glpp_glfw PUBLIC glpp::glpp)
 
 if(USING_CONAN)
-  find_package(glfw REQUIRED)
+  find_package(glfw3 REQUIRED)
   find_package(Boost REQUIRED)
   target_link_libraries(
     glpp_glfw
 
     PUBLIC
-    Boost::Boost
-    glfw::glfw
+    Boost::boost
+    glfw
   )
 else()
   find_package(glfw3 CONFIG REQUIRED)

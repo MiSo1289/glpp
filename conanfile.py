@@ -1,4 +1,5 @@
-from conans import CMake, CMakeToolchain, ConanFile, tools
+from conans import ConanFile, tools
+from conan.tools.cmake import CMakeToolchain, CMake
 
 
 class Glpp(ConanFile):
@@ -33,20 +34,20 @@ class Glpp(ConanFile):
         "CMakeLists.txt",
     )
     requires = (
-        "fmt/7.0.1",
+        "fmt/7.1.3",
         "glad/0.1.33",
         "glm/0.9.9.8",
-        "magic_enum/0.6.6",
+        "magic_enum/0.7.3",
         "ms-gsl/3.0.1",
     )
 
     def requirements(self):
         if self.options.glfw:
-            self.requires("boost/1.73.0")
+            self.requires("boost/1.76.0")
             self.requires("glfw/3.3.2")
 
         if self.options.config:
-            self.requires("nlohmann_json/3.9.0")
+            self.requires("nlohmann_json/3.9.1")
 
         if self.options.imgui:
             self.requires("imgui/1.77")
@@ -63,15 +64,15 @@ class Glpp(ConanFile):
             self.copy("imgui_impl_glfw.*", dst="bindings", src="res/bindings")
             self.copy("imgui_impl_opengl3.*", dst="bindings", src="res/bindings")
 
-    def toolchain(self):
+    def generate(self):
         tc = CMakeToolchain(self)
 
-        tc.definitions["USING_CONAN"] = True
-        tc.definitions["BUILD_GLFW"] = self.options.glfw
-        tc.definitions["BUILD_CONFIG"] = self.options.config
-        tc.definitions["BUILD_EXAMPLES"] = self.options.examples
+        tc.variables["USING_CONAN"] = True
+        tc.variables["BUILD_GLFW"] = self.options.glfw
+        tc.variables["BUILD_CONFIG"] = self.options.config
+        tc.variables["BUILD_EXAMPLES"] = self.options.examples
 
-        tc.write_toolchain_files()
+        tc.generate()
 
     def build(self):
         cmake = CMake(self)

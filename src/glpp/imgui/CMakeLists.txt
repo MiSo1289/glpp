@@ -61,14 +61,20 @@ if(USING_CONAN)
     "${PROJECT_BINARY_DIR}/bindings/imgui_impl_glfw.cpp"
     "${PROJECT_BINARY_DIR}/bindings/imgui_impl_opengl3.cpp"
   )
+  target_compile_definitions(
+    imgui_bindings
 
-  find_package(glfw REQUIRED)
+    PRIVATE
+    "IMGUI_IMPL_OPENGL_LOADER_GLAD"
+  )
+
+  find_package(glfw3 REQUIRED)
   target_link_libraries(
     imgui_bindings
 
     PRIVATE
     glad::glad
-    glfw::glfw
+    glfw
     imgui::imgui
   )
 

@@ -73,7 +73,7 @@ target_link_libraries(
 
   PUBLIC
   OpenGL::GL
-  fmt::fmt
+  fmt::fmt-header-only
   glad::glad
 )
 
