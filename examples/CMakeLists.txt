@@ -1,12 +1,14 @@
 if(BUILD_GLFW)
+  find_package(lyra REQUIRED)
+
   add_executable(glfw_input_example)
   target_compile_features(glfw_input_example PRIVATE cxx_std_17)
   target_sources(glfw_input_example PRIVATE glfw_input_example.cpp)
   target_link_libraries(
     glfw_input_example
     PRIVATE
-    CONAN_PKG::lyra
-    glpp::glpp_glfw
+    lyra::lyra
+    glpp::glfw
   )
 
   if(BUILD_CONFIG)
@@ -17,9 +19,9 @@ if(BUILD_GLFW)
       draw_example
 
       PRIVATE
-      glpp::glpp
-      glpp::glpp_config
-      glpp::glpp_glfw
+      glpp::core
+      glpp::config
+      glpp::glfw
     )
   endif()
 
@@ -31,9 +33,9 @@ if(BUILD_GLFW)
       imgui_example
 
       PRIVATE
-      glpp::glpp
-      glpp::glpp_glfw
-      glpp::glpp_imgui
+      glpp::core
+      glpp::glfw
+      glpp::imgui
     )
   endif()
 endif()

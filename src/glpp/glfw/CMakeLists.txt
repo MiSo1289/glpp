@@ -1,5 +1,8 @@
+find_package(boost REQUIRED)
+find_package(glfw3 REQUIRED)
+
 add_library(glpp_glfw)
-add_library(glpp::glpp_glfw ALIAS glpp_glfw)
+add_library(glpp::glfw ALIAS glpp_glfw)
 
 target_compile_features(glpp_glfw PUBLIC cxx_std_20)
 target_include_directories(
@@ -34,18 +37,11 @@ target_sources(
   keys.cpp
   window.cpp
 )
+target_link_libraries(
+  glpp_glfw
 
-target_link_libraries(glpp_glfw PUBLIC glpp::glpp)
-
-if(USING_CONAN)
-  target_link_libraries(
-    glpp_glfw
-
-    PUBLIC
-    CONAN_PKG::boost
-    CONAN_PKG::glfw
-  )
-else()
-  find_package(glfw3 CONFIG REQUIRED)
-  target_link_libraries(glpp_glfw PUBLIC glfw)
-endif()
+  PUBLIC
+  boost::boost
+  glfw
+  glpp::core
+)

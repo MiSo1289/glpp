@@ -1,5 +1,9 @@
+find_package(glad REQUIRED)
+find_package(glfw3 REQUIRED)
+find_package(imgui REQUIRED)
+
 add_library(glpp_imgui)
-add_library(glpp::glpp_imgui ALIAS glpp_imgui)
+add_library(glpp::imgui ALIAS glpp_imgui)
 
 target_compile_features(glpp_imgui PUBLIC cxx_std_20)
 target_include_directories(
@@ -29,9 +33,9 @@ target_link_libraries(
   glpp_imgui
 
   PUBLIC
-  CONAN_PKG::imgui
-  glpp::glpp
-  glpp::glpp_glfw
+  imgui::imgui
+  glpp::core
+  glpp::glfw
 )
 
 add_library(imgui_bindings OBJECT)
@@ -65,15 +69,13 @@ target_compile_definitions(
   PRIVATE
   "IMGUI_IMPL_OPENGL_LOADER_GLAD"
 )
-
-find_package(glfw3 REQUIRED)
 target_link_libraries(
   imgui_bindings
 
   PRIVATE
-  CONAN_PKG::glad
-  CONAN_PKG::glfw
-  CONAN_PKG::imgui
+  glad::glad
+  glfw
+  imgui::imgui
 )
 
 target_link_libraries(glpp_imgui PRIVATE imgui::imgui_bindings)

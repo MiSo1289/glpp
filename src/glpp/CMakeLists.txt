@@ -1,24 +1,29 @@
-include(CMakeDependentOption)
+find_package(fmt REQUIRED)
+find_package(glad REQUIRED)
+find_package(glm REQUIRED)
+find_package(magic_enum REQUIRED)
+find_package(Microsoft.GSL REQUIRED)
+find_package(opengl REQUIRED)
 
-add_library(glpp)
-add_library(glpp::glpp ALIAS glpp)
+add_library(glpp_core)
+add_library(glpp::core ALIAS glpp_core)
 
-target_compile_features(glpp PUBLIC cxx_std_20)
+target_compile_features(glpp_core PUBLIC cxx_std_20)
 target_include_directories(
-  glpp
+  glpp_core
 
   PUBLIC
   "${PROJECT_SOURCE_DIR}/src"
 )
 set_target_properties(
-  glpp
+  glpp_core
 
   PROPERTIES
   VERSION "${CMAKE_PROJECT_VERSION}"
   SOVERSION "${CMAKE_PROJECT_VERSION_MAJOR}"
 )
 target_sources(
-  glpp
+  glpp_core
 
   PUBLIC
   bit_enum.hpp
@@ -62,30 +67,21 @@ target_sources(
   value_ptr.cpp
   vertex_array.cpp
 )
-
-find_package(OpenGL REQUIRED)
 target_link_libraries(
-  glpp
+  glpp_core
 
   PUBLIC
-  OpenGL::GL
-  CONAN_PKG::fmt
-  CONAN_PKG::glad
-  CONAN_PKG::glm
-  CONAN_PKG::magic_enum
-  CONAN_PKG::ms-gsl
+  fmt::fmt
+  glad::glad
+  glm::glm
+  opengl::opengl
+  magic_enum::magic_enum
+  Microsoft.GSL::GSL
 )
 
-option(BUILD_CONFIG "Build the glpp_config library" ON)
 if(BUILD_CONFIG)
   add_subdirectory(config)
 endif()
-
-option(BUILD_GLFW "Build the glpp_glfw library" ON)
-cmake_dependent_option(
-  BUILD_IMGUI "Build the glpp_imgui library" ON
-  "BUILD_GLFW" OFF
-)
 
 if(BUILD_GLFW)
   add_subdirectory(glfw)
