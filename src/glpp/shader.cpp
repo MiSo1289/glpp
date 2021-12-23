@@ -1,5 +1,6 @@
 #include "glpp/shader.hpp"
 
+#include <iterator>
 #include <vector>
 
 #include <gsl/gsl_util>

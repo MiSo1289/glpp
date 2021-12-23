@@ -20,6 +20,7 @@ class Glpp(ConanFile):
         "with_examples": [True, False],
     }
     default_options = {
+        "shared": False,
         "fPIC": True,
         "with_glfw": True,
         "with_config": True,
